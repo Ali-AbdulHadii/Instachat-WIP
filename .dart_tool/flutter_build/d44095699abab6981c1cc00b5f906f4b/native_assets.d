@@ -1,0 +1,1 @@
+ C:\\Users\\aliab\\OneDrive\\Desktop\\InstaChatRepo\\Instachat-ChatApp\\.dart_tool\\flutter_build\\d44095699abab6981c1cc00b5f906f4b\\native_assets.yaml: 
