@@ -1,3 +1,4 @@
+import 'package:chatappdemo1/Pages/chat.dart';
 import 'package:chatappdemo1/services/database.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +16,21 @@ class _HomeState extends State<Home> {
   //for changing widget state
   bool search = false;
   //storing info for chatroom
-  String? userName, profilePhoto, email;
+  String? myUserName, myProfilePhoto, myEmail;
   //for search functions
   //this one stores the friends list
   List<String> localFriends = [];
   //this one stores the query search result
   List<String> filteredFriends = [];
   bool isMounted = false;
+  getChatIdbyUsername(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -50,9 +59,9 @@ class _HomeState extends State<Home> {
 
   //get user data from shared preference
   getSharedPref() async {
-    userName = await SharedPreference().getUserName();
-    profilePhoto = await SharedPreference().getUserPhoto();
-    email = await SharedPreference().getUserEmail();
+    myUserName = await SharedPreference().getUserName();
+    myProfilePhoto = await SharedPreference().getUserPhoto();
+    myEmail = await SharedPreference().getUserEmail();
     setState(() {});
   }
 
@@ -313,9 +322,23 @@ class _HomeState extends State<Home> {
         String friendName = filteredFriends[index];
         return ListTile(
           title: Text(friendName),
-          onTap: () {
-            //handle tapping on the search result, open chat.
-            print('Tapped on search result: $friendName');
+          onTap: () async {
+            //handle tapping on the search result, open chat
+            var chatId =
+                getChatIdbyUsername(SharedPreference.userNameKey, friendName);
+            Map<String, dynamic> chatDataMap = {
+              "users": [myUserName, friendName]
+            };
+            await DatabaseMethods().createChatRoom(chatId, chatDataMap);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ChatSection(
+                          userName: friendName,
+                          profileURL: DatabaseMethods()
+                              .getFriendPhotoURL(friendName)
+                              .toString(),
+                        )));
           },
         );
       },

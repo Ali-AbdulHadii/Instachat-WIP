@@ -4,9 +4,27 @@ import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  //create chat room
+  createChatRoom(
+      String chatRoomId, Map<String, dynamic> chatRoomDataMap) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(chatRoomId)
+        .get();
+    if (snapshot.exists) {
+      return true;
+    } else {
+      return FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(chatRoomId)
+          .set(chatRoomDataMap);
+    }
+  }
+
   //getfriends photo when searching
   Future<String?> getFriendPhotoURL(String friendName) async {
     try {
@@ -20,7 +38,7 @@ class DatabaseMethods {
         String? photoURL = querySnapshot.docs.first.get("Photo");
         return photoURL;
       } else {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/480px-Default_pfp.svg.png";
+        return null;
       }
     } catch (e) {
       print("Error getting photo URL: $e");
