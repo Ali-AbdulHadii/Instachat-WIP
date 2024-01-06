@@ -8,6 +8,17 @@ import 'package:flutter/material.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  //add message function to firebase
+  Future addMessage(String chatRoomId, String messageId,
+      Map<String, dynamic> messageDataMap) {
+    return FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(chatRoomId)
+        .collection("chats")
+        .doc(messageId)
+        .set(messageDataMap);
+  }
+
   //create chat room
   createChatRoom(
       String chatRoomId, Map<String, dynamic> chatRoomDataMap) async {

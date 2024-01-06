@@ -1,4 +1,9 @@
+import 'package:chatappdemo1/services/database.dart';
+import 'package:chatappdemo1/services/sharePreference.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'dart:math' as math;
 
 class ChatSection extends StatefulWidget {
   String? userName, profileURL;
@@ -9,6 +14,63 @@ class ChatSection extends StatefulWidget {
 }
 
 class _ChatSectionState extends State<ChatSection> {
+  TextEditingController _messageController = TextEditingController();
+  String? myUsername, myProfilePhoto, myEmail, messageId;
+
+  getSharePrefs() async {
+    myUsername = await SharedPreference().getUserName();
+    myProfilePhoto = await SharedPreference().getUserPhoto();
+    myEmail = await SharedPreference().getUserEmail();
+  }
+
+  //randomID generator
+  String? randomID() {
+    DateTime now = DateTime.now();
+
+    String formattedDate = DateFormat('yyMMddkkmm').format(now);
+
+    final String messageId = math.Random().nextInt(10 + 90).toString();
+    return (formattedDate + messageId);
+  }
+
+  //function to send the message
+  addMessage(bool sendIconPressed) {
+    //null check
+    if (_messageController.text != "") {
+      String messageContent = _messageController.text;
+      _messageController.text = "";
+      //takes current date
+      DateTime time = DateTime.now();
+      //format in hour-mintue
+      String timestampedDate = DateFormat('h:mma').format(time);
+      //maps to 4 different ways to firebase, further improvement needed
+      Map<String, dynamic> messageDataMap = {
+        "Message": messageContent,
+        "Sent By": myUsername,
+        "Timestamp": DateFormat,
+        "time": FieldValue.serverTimestamp(),
+      };
+      if (messageId == "") {
+        messageId = randomID();
+      }
+
+      // DatabaseMethods().addMessage(chatRoomId, messageId, messageDataMap)
+    }
+  }
+
+  //load user data from shared preferences
+  void onLoad() async {
+    await getSharePrefs();
+    setState(() {});
+  }
+
+  //init state
+  @override
+  void initState() {
+    super.initState();
+    onLoad();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -324,8 +324,7 @@ class _HomeState extends State<Home> {
           title: Text(friendName),
           onTap: () async {
             //handle tapping on the search result, open chat
-            var chatId =
-                getChatIdbyUsername(SharedPreference.userNameKey, friendName);
+            var chatId = getChatIdbyUsername(myUserName!, friendName);
             Map<String, dynamic> chatDataMap = {
               "users": [myUserName, friendName]
             };
