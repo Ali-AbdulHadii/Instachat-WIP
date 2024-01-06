@@ -7,6 +7,27 @@ import 'package:firebase_core/firebase_core.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  //getfriends photo when searching
+  Future<String?> getFriendPhotoURL(String friendName) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection("users")
+              .where("Username", isEqualTo: friendName)
+              .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        String? photoURL = querySnapshot.docs.first.get("Photo");
+        return photoURL;
+      } else {
+        return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/480px-Default_pfp.svg.png";
+      }
+    } catch (e) {
+      print("Error getting photo URL: $e");
+      return null;
+    }
+  }
+
   //function to get user friends and store them to a list
   Future<List<String>> getUserFriends() async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =

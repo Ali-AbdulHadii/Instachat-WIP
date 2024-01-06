@@ -13,8 +13,8 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\android\app\src\debug\AndroidManifest.xml:6:5-66
-15-->C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\android\app\src\debug\AndroidManifest.xml:6:22-64
+15-->C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\android\app\src\debug\AndroidManifest.xml:6:5-66
+15-->C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\android\app\src\debug\AndroidManifest.xml:6:22-64
 16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 16-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:26:5-79
 16-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:26:22-76
@@ -86,31 +86,31 @@
 66            android:value="2" />
 67
 68        <service
-68-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
+68-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
 69            android:name="com.google.firebase.components.ComponentDiscoveryService"
-69-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:10:18-89
+69-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:10:18-89
 70            android:directBootAware="true"
 70-->[com.google.firebase:firebase-common:20.4.2] C:\Users\aliab\.gradle\caches\transforms-3\29429379be0edfde063e43fae29f4d1b\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:32:13-43
 71            android:exported="false" >
 71-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:68:13-37
 72            <meta-data
-72-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
+72-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
 73                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
-73-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-124
+73-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-124
 74                android:value="com.google.firebase.components.ComponentRegistrar" />
-74-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
+74-->[:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
 75            <meta-data
-75-->[:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
+75-->[:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
 76                android:name="com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar"
-76-->[:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-134
+76-->[:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-134
 77                android:value="com.google.firebase.components.ComponentRegistrar" />
-77-->[:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
+77-->[:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
 78            <meta-data
-78-->[:firebase_core] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
+78-->[:firebase_core] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
 79                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
-79-->[:firebase_core] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-124
+79-->[:firebase_core] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-124
 80                android:value="com.google.firebase.components.ComponentRegistrar" />
-80-->[:firebase_core] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-ChatApp\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
+80-->[:firebase_core] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
 81            <meta-data
 81-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:69:13-71:85
 82                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"

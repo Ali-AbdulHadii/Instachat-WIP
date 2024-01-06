@@ -1,7 +1,7 @@
-#Sat Jan 06 19:53:39 GST 2024
-base.0=C\:\\Users\\aliab\\OneDrive\\Desktop\\InstaChatRepo\\Instachat-ChatApp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-base.1=C\:\\Users\\aliab\\OneDrive\\Desktop\\InstaChatRepo\\Instachat-ChatApp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
-base.2=C\:\\Users\\aliab\\OneDrive\\Desktop\\InstaChatRepo\\Instachat-ChatApp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
+#Sat Jan 06 21:23:17 GST 2024
+base.0=C\:\\Users\\aliab\\OneDrive\\Desktop\\InstaChatRepo\\Instachat-WIP-main\\Instachat-WIP\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+base.1=C\:\\Users\\aliab\\OneDrive\\Desktop\\InstaChatRepo\\Instachat-WIP-main\\Instachat-WIP\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
+base.2=C\:\\Users\\aliab\\OneDrive\\Desktop\\InstaChatRepo\\Instachat-WIP-main\\Instachat-WIP\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
 path.0=classes.dex
 path.1=classes2.dex
 path.2=classes3.dex

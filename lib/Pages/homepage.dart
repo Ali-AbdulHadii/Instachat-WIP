@@ -14,6 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool search = false;
   String? userName, profilePhoto, email;
+  static List<String> friendsList = [];
   List<String> localFriends = [];
   List<String> filteredFriends = [];
   bool isMounted = false;
@@ -52,16 +53,20 @@ class _HomeState extends State<Home> {
   }
 
   void initLocalFriends() async {
-    //fetch the friends list from Firebase
-    List<String> firebaseFriends = await DatabaseMethods().getUserFriends();
+    //check if the local friends list is already populated
+    if (localFriends.isEmpty) {
+      //fetch the friends list from Firebase
+      List<String> firebaseFriends = await DatabaseMethods().getUserFriends();
 
-    //set the friends list locally
-    await SharedPreference().setFriendsList(firebaseFriends);
-    //set the localFriends state
-    setState(() {
-      localFriends = firebaseFriends;
-      print('Local friends: $localFriends');
-    });
+      //save the friends list to SharedPreferences
+      await SharedPreference().setFriendsList(firebaseFriends);
+
+      //update the localFriends state
+      setState(() {
+        localFriends = firebaseFriends;
+        print('Local friends: $localFriends');
+      });
+    }
   }
 
   List<String> filterFriendsList(String searchQuery) {
@@ -80,16 +85,21 @@ class _HomeState extends State<Home> {
     return filteredList;
   }
 
+  List<String> emptyList = [];
   void initialSearch(String value) async {
-    if (value.length == 0) {
-      setState(() {
-        localFriends = [];
-      });
-    }
     setState(() {
       search = true;
     });
-    filterFriendsList(value);
+
+    if (value.isEmpty) {
+      // If the search query is empty, don't clear the localFriends list
+      setState(() {
+        filteredFriends = emptyList;
+      });
+    } else {
+      // If there's a search query, filter the friends list
+      filterFriendsList(value);
+    }
   }
 
   List<String> filterFriends(String name) {
