@@ -12,10 +12,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //for changing widget state
   bool search = false;
+  //storing info for chatroom
   String? userName, profilePhoto, email;
-  static List<String> friendsList = [];
+  //for search functions
+  //this one stores the friends list
   List<String> localFriends = [];
+  //this one stores the query search result
   List<String> filteredFriends = [];
   bool isMounted = false;
   @override
@@ -92,12 +96,12 @@ class _HomeState extends State<Home> {
     });
 
     if (value.isEmpty) {
-      // If the search query is empty, don't clear the localFriends list
+      //set result to empty
       setState(() {
         filteredFriends = emptyList;
       });
     } else {
-      // If there's a search query, filter the friends list
+      //if there's a search query, filter the friends list
       filterFriendsList(value);
     }
   }
