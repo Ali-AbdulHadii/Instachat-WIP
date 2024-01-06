@@ -7,68 +7,24 @@ import 'package:firebase_core/firebase_core.dart';
 
 //integrates data to database
 class DatabaseMethods {
-  // Function to get all friend usernames of a user
-  Future<List<String>> getFriendUsernames(String userId) async {
-    try {
-      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(userId)
-              .get();
+  //function to get user friends and store them to a list
+  Future<List<String>> getUserFriends() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
 
-      if (documentSnapshot.exists) {
-        List<dynamic>? friendsList = documentSnapshot.data()?['friends'];
+    List<String> friendsList = [];
 
-        if (friendsList != null) {
-          List<String> friendUsernames = friendsList
-              .map((friend) => friend['username'] as String)
-              .toList();
-          return friendUsernames;
-        }
+    querySnapshot.docs
+        .forEach((DocumentSnapshot<Map<String, dynamic>> document) {
+      // Check if the 'friends' field exists and is an array in the document
+      if (document.data()!.containsKey('friends') &&
+          document['friends'] is List<dynamic>) {
+        List<dynamic> friends = document['friends'];
+        friendsList.addAll(friends.map((friend) => friend.toString()));
       }
-    } catch (e) {
-      print("Error fetching friend usernames: $e");
-    }
+    });
 
-    // Return an empty list if there is an error or no friends
-    return [];
-  }
-
-  Future<List<String>> fetchFriendsFromFirebase() async {
-    try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await FirebaseFirestore.instance.collection('friends').get();
-
-      List<String> friends = querySnapshot.docs
-          .map((doc) => doc.data()!['username'] as String)
-          .toList();
-
-      return friends;
-    } catch (e) {
-      print('Error fetching friends from Firebase: $e');
-      return [];
-    }
-  }
-
-  Future<List<String>> searchFriends(String searchText) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
-        .instance
-        .collection("users")
-        .where("Username", isGreaterThanOrEqualTo: searchText)
-        .where("Username", isLessThan: searchText + 'z')
-        .get();
-
-    List<String> friends = [];
-
-    for (QueryDocumentSnapshot<Map<String, dynamic>> documentSnapshot
-        in querySnapshot.docs) {
-      if (documentSnapshot != null) {
-        String friendId = documentSnapshot.id;
-        //logic to check if the user is already friends or if you want to include only non-friends.
-        friends.add(friendId);
-      }
-    }
-    return friends;
+    return friendsList;
   }
 
   //function to check if a friend request has been already sent

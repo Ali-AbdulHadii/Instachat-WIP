@@ -67,7 +67,7 @@ class SharedPreference {
     return preference.getString(displayUserNameKey);
   }
 
-  //fuinction to save friends locally
+  //fuinction to set friends locally
   Future<bool> setFriendsList(List<String> friends) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     return preference.setStringList(friendsListKey, friends.toList());

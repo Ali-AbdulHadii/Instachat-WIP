@@ -20,32 +20,30 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // Initialize the state when the widget is created
+    //Initialize the state when the widget is created
     isMounted = true;
     onLoad();
   }
 
   @override
   void dispose() {
-    // Set isMounted to false when the widget is disposed
+    //set isMounted to false when the widget is disposed
     isMounted = false;
     super.dispose();
   }
 
-  // Load user data from shared preferences
+  //load user data from shared preferences
   void onLoad() async {
-    print("Loading data...");
     await getSharedPref();
     if (isMounted) {
       initLocalFriends();
     }
-    print("Data loaded successfully!");
     if (isMounted) {
       setState(() {});
     }
   }
 
-  // Get user data from shared preferences
+  //get user data from shared preference
   getSharedPref() async {
     userName = await SharedPreference().getUserName();
     profilePhoto = await SharedPreference().getUserPhoto();
@@ -54,29 +52,16 @@ class _HomeState extends State<Home> {
   }
 
   void initLocalFriends() async {
-    print('Loading data...');
+    //fetch the friends list from Firebase
+    List<String> firebaseFriends = await DatabaseMethods().getUserFriends();
 
-    // Fetch the friends list from Firebase
-    List<String> firebaseFriends =
-        await DatabaseMethods().fetchFriendsFromFirebase();
-    print('Friends from Firebase: $firebaseFriends');
-    // Save the friends list locally
+    //set the friends list locally
     await SharedPreference().setFriendsList(firebaseFriends);
-
-    print('Data loaded successfully!');
-    print('Local friends: $firebaseFriends');
-
-    // Set the localFriends state
+    //set the localFriends state
     setState(() {
       localFriends = firebaseFriends;
+      print('Local friends: $localFriends');
     });
-  }
-
-// Change the return type of getFriendsList to Set<String>
-  Future<Set<String>> getFriendsList() async {
-    final prefs = await SharedPreferences.getInstance();
-    // Return the Set<String> directly
-    return prefs.getStringList('friends')?.toSet() ?? {};
   }
 
   List<String> filterFriendsList(String searchQuery) {
