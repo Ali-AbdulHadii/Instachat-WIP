@@ -1,2 +1,2 @@
-# Instachat-WIP
+# Instachat ChatApp
  
