@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
   //this one stores the query search result
   List<String> filteredFriends = [];
   bool isMounted = false;
+  //chatroomid
   getChatIdbyUsername(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
       return "$b\_$a";
@@ -131,7 +132,13 @@ class _HomeState extends State<Home> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.orange, Colors.red, Colors.deepPurple],
+            colors: [
+              Colors.amber,
+              Colors.orange,
+              Colors.red,
+              Colors.purple,
+              Colors.deepPurple.shade700
+            ],
           ),
         ),
         child: Column(

@@ -8,6 +8,26 @@ import 'package:flutter/material.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  //get chat room msgs
+  Future<Stream<QuerySnapshot>> getChatroomMessages(chatroomIds) async {
+    //returns all the msgs by order
+    return FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(chatroomIds)
+        .collection("chats")
+        .orderBy("time", descending: true)
+        .snapshots();
+  }
+
+  //function update messages
+  updateLastMessageSent(
+      String chatroomId, Map<String, dynamic> lastMessageInfoMap) {
+    return FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(chatroomId)
+        .update(lastMessageInfoMap);
+  }
+
   //add message function to firebase
   Future addMessage(String chatRoomId, String messageId,
       Map<String, dynamic> messageDataMap) {

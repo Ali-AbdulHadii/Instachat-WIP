@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
+import 'package:chatappdemo1/Pages/homepage.dart';
 
 class ChatSection extends StatefulWidget {
   String? userName, profileURL;
@@ -14,13 +15,27 @@ class ChatSection extends StatefulWidget {
 }
 
 class _ChatSectionState extends State<ChatSection> {
+  //controller
   TextEditingController _messageController = TextEditingController();
-  String? myUsername, myProfilePhoto, myEmail, messageId;
+  //storing info
+  String? myUsername, myProfilePhoto, myEmail, messageId, chatroomId;
+  //stream message
+  Stream? messageStream;
 
   getSharePrefs() async {
     myUsername = await SharedPreference().getUserName();
     myProfilePhoto = await SharedPreference().getUserPhoto();
     myEmail = await SharedPreference().getUserEmail();
+    chatroomId = getChatIdbyUsername(widget.userName!, myUsername!);
+  }
+
+  //chatroomid
+  getChatIdbyUsername(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
   }
 
   //randomID generator
@@ -30,37 +45,111 @@ class _ChatSectionState extends State<ChatSection> {
     String formattedDate = DateFormat('yyMMddkkmm').format(now);
 
     final String messageId = math.Random().nextInt(10 + 90).toString();
-    return (formattedDate + messageId);
+    final DateTime messageTimestamp = DateTime.now();
+    String messageDateFormat = DateFormat('h:mma').format(messageTimestamp);
+    return (formattedDate + messageId + messageDateFormat);
+  }
+
+  Widget chatMessageTile(String message, bool SentByMe) {
+    return Row(
+      mainAxisAlignment:
+          SentByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        Flexible(
+          child: Container(
+            padding: EdgeInsets.all(15),
+            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomRight:
+                      SentByMe ? Radius.circular(0) : Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomLeft:
+                      SentByMe ? Radius.circular(20) : Radius.circular(0),
+                ),
+                color: SentByMe ? Colors.amber : Colors.orange),
+            child: Text(
+              message,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontFamily: "Montserrat-R",
+                  fontWeight: FontWeight.w500),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget chatMessage() {
+    return StreamBuilder(
+        stream: messageStream,
+        builder: (context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  padding: EdgeInsets.only(bottom: 90, top: 130),
+                  itemCount: snapshot.data.docs.length,
+                  reverse: true,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot docSnapshot = snapshot.data.docs[index];
+                    return chatMessageTile(docSnapshot["message"],
+                        myUsername == docSnapshot["sentBy"]);
+                  })
+              : Center(
+                  child: CircularProgressIndicator(),
+                );
+        });
+  }
+
+  //get and set msgs
+  getAndSetMessage() async {
+    messageStream = await DatabaseMethods().getChatroomMessages(chatroomId);
+    //setstate
+    setState(() {});
   }
 
   //function to send the message
   addMessage(bool sendIconPressed) {
-    //null check
     if (_messageController.text != "") {
-      String messageContent = _messageController.text;
+      String message = _messageController.text;
       _messageController.text = "";
-      //takes current date
-      DateTime time = DateTime.now();
-      //format in hour-mintue
-      String timestampedDate = DateFormat('h:mma').format(time);
-      //maps to 4 different ways to firebase, further improvement needed
-      Map<String, dynamic> messageDataMap = {
-        "Message": messageContent,
-        "Sent By": myUsername,
-        "Timestamp": DateFormat,
-        "time": FieldValue.serverTimestamp(),
-      };
-      if (messageId == "") {
-        messageId = randomID();
-      }
 
-      // DatabaseMethods().addMessage(chatRoomId, messageId, messageDataMap)
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat('h:mma').format(now);
+      Map<String, dynamic> messageInfoMap = {
+        "message": message,
+        "sentBy": myUsername,
+        "ts": formattedDate,
+        "time": FieldValue.serverTimestamp(),
+        "imgUrl": myProfilePhoto,
+      };
+      //generate randomID for msgs
+      messageId ??= randomID();
+      //call addmessage function from databasemethods.dart
+      DatabaseMethods()
+          .addMessage(chatroomId!, messageId!, messageInfoMap)
+          .then((value) {
+        Map<String, dynamic> lastMessageInfoMap = {
+          "lastMessage": message,
+          "lastMessageSendTs": formattedDate,
+          "time": FieldValue.serverTimestamp(),
+          "lastMessageSendBy": myUsername,
+        };
+        DatabaseMethods()
+            .updateLastMessageSent(chatroomId!, lastMessageInfoMap);
+        if (sendIconPressed) {
+          messageId = null;
+        }
+      });
     }
   }
 
   //load user data from shared preferences
   void onLoad() async {
     await getSharePrefs();
+    await getAndSetMessage();
     setState(() {});
   }
 
@@ -74,157 +163,104 @@ class _ChatSectionState extends State<ChatSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.deepPurple,
-      //overflow singlechild scroll maybe
+      backgroundColor: Colors.transparent,
       body: Container(
-        //main container
-        margin: EdgeInsets.only(top: 50),
-        child: Column(
+        //instachat main colors
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.amber,
+              Colors.orange,
+              Colors.red,
+              Colors.purple,
+              Colors.deepPurple.shade700
+            ],
+          ),
+        ),
+        padding: EdgeInsets.only(top: 60.0),
+        child: Stack(
           children: [
+            Container(
+              //main messages container
+              margin: EdgeInsets.only(top: 50.0),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 1.12,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Colors.amber,
+                    Colors.orange,
+                    Colors.red,
+                    Colors.purple,
+                    Colors.deepPurple.shade700
+                  ]),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(5),
+                      topRight: Radius.circular(5))),
+              child: chatMessage(),
+            ),
             Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              //this is for the profile pic and name, getting back to the home page
-              //last seen will be implemented later
+              //top bar for returning, profile picture, and username
+              padding: const EdgeInsets.only(left: 10.0),
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white54),
-                  SizedBox(width: 15),
-                  //profile image, will be change to network image later on
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(
-                      'images/pptest1.jpg',
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Home()));
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios_new_outlined,
+                      color: Colors.black,
                     ),
                   ),
-                  SizedBox(width: 9),
-                  //recipent name
+                  SizedBox(width: 20.0),
+                  Container(
+                    child: CircleAvatar(backgroundColor: Colors.black),
+                  ),
+                  SizedBox(
+                    width: 12.0,
+                  ),
                   Text(
-                    'Alio Abdul',
+                    widget.userName!,
                     style: TextStyle(
-                        color: Colors.white60,
-                        fontSize: 20,
-                        fontFamily: 'Monstserrat-R',
-                        fontWeight: FontWeight.normal),
-                  )
+                        color: Colors.black,
+                        fontSize: 20.0,
+                        fontFamily: "Montserrat-R"),
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 10),
-            //the messaging widget is here
-            //how to implement two different msgs?
-            Expanded(
-              //when scrolling hide the keyboard
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onPanDown: (_) {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                child: SingleChildScrollView(
-                  child: Container(
-                    //responsive design here
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 1.15,
-                    padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white60,
-                    ),
-                    child: Column(
-                      children: [
-                        //messages are here
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width / 2),
-                          alignment: Alignment.bottomLeft,
-                          decoration: BoxDecoration(
-                            color: Colors.deepPurple,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5),
-                              topRight: Radius.circular(5),
-                              bottomLeft: Radius.circular(5),
-                              bottomRight: Radius.circular(0),
-                            ),
-                          ),
-                          child: Text(
-                            'Hey',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Monsterrat-R',
-                                fontSize: 18),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        //sender message
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          margin: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width / 2),
-                          alignment: Alignment.bottomLeft,
-                          decoration: BoxDecoration(
-                            color: Colors.deepPurpleAccent,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5),
-                              topRight: Radius.circular(5),
-                              bottomLeft: Radius.circular(0),
-                              bottomRight: Radius.circular(5),
-                            ),
-                          ),
-                          child: Text(
-                            'Hey',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Monsterrat-R',
-                                fontSize: 18),
-                          ),
-                        ),
-                        Spacer(),
-                        //text Input is here
-                        Material(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          elevation: 5,
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 5),
-                            padding: EdgeInsets.only(left: 30),
-                            decoration: BoxDecoration(
-                                color: Colors.deepPurple,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      hintText: 'kslajgflkjsf',
-                                      border: InputBorder.none,
-                                      hintStyle: TextStyle(
-                                          fontSize: 16, color: Colors.white70),
-                                    ),
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(5),
-                                  margin: EdgeInsets.only(right: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.deepPurpleAccent,
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  child: Icon(
-                                    Icons.send_rounded,
-                                    color: Colors.white70,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+            //the messaging input controller is here
+            Container(
+              margin: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+              alignment: Alignment.bottomCenter,
+              child: Material(
+                elevation: 1.0,
+                borderRadius: BorderRadius.circular(30),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: Colors.amber.shade200,
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: TextField(
+                      controller: _messageController,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Send a Message",
+                          hintStyle: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Montserrat-R",
+                              fontSize: 16),
+                          suffixIcon: GestureDetector(
+                              onTap: () {
+                                addMessage(true);
+                              },
+                              child: Icon(
+                                Icons.send_rounded,
+                                color: Colors.black,
+                              ))),
                     ),
                   ),
                 ),
