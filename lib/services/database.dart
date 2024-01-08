@@ -8,6 +8,24 @@ import 'package:flutter/material.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  //get chatrooms
+  Future<Stream<QuerySnapshot>> getChatRooms() async {
+    String? myUsername = await SharedPreference().getUserName();
+    return FirebaseFirestore.instance
+        .collection("chatrooms")
+        .orderBy("time", descending: true)
+        .where("users", arrayContains: myUsername!)
+        .snapshots();
+  }
+
+  //get user data from collection for replacing the chatroom id with the actual id
+  Future<QuerySnapshot> getUserInfo(String username) async {
+    return await FirebaseFirestore.instance
+        .collection("users")
+        .where("Username", isEqualTo: username)
+        .get();
+  }
+
   //get chat room msgs
   Future<Stream<QuerySnapshot>> getChatroomMessages(chatroomIds) async {
     //returns all the msgs by order

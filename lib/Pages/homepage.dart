@@ -1,6 +1,7 @@
 import 'package:chatappdemo1/Pages/chat.dart';
 import 'package:chatappdemo1/services/database.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:chatappdemo1/Pages/addfriend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,8 @@ class _HomeState extends State<Home> {
   //this one stores the query search result
   List<String> filteredFriends = [];
   bool isMounted = false;
+  //stream var
+  Stream? streamChatRooms;
   //chatroomid
   getChatIdbyUsername(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
@@ -30,6 +33,30 @@ class _HomeState extends State<Home> {
     } else {
       return "$a\_$b";
     }
+  }
+
+  //widget to get the list of all chats
+  Widget ChatRoomsList() {
+    return StreamBuilder(
+        stream: streamChatRooms,
+        builder: (context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: snapshot.data.docs.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot docSnapshot = snapshot.data.docs[index];
+                    return ChatRoomListTiles(
+                        chatRoomId: docSnapshot.id,
+                        lastMessage: docSnapshot["lastMessage"],
+                        myUsername: myUserName!,
+                        time: docSnapshot["lastMessageSendTs"]);
+                  })
+              : Center(
+                  child: CircularProgressIndicator(),
+                );
+        });
   }
 
   @override
@@ -49,7 +76,10 @@ class _HomeState extends State<Home> {
 
   //load user data from shared preferences
   void onLoad() async {
+    //gets local data
     await getSharedPref();
+    //stores all the chatrooms fetched from forebase database in database methods file
+    streamChatRooms = await DatabaseMethods().getChatRooms();
     if (isMounted) {
       initLocalFriends();
     }
@@ -60,9 +90,9 @@ class _HomeState extends State<Home> {
 
   //get user data from shared preference
   getSharedPref() async {
-    myUserName = await SharedPreference().getUserName();
-    myProfilePhoto = await SharedPreference().getUserPhoto();
-    myEmail = await SharedPreference().getUserEmail();
+    myUserName = await SharedPreference().getUserName() as String;
+    myProfilePhoto = await SharedPreference().getUserPhoto() as String;
+    myEmail = await SharedPreference().getUserEmail() as String;
     setState(() {});
   }
 
@@ -206,35 +236,22 @@ class _HomeState extends State<Home> {
             ),
             //container for Chat Entries
             Container(
-              margin: EdgeInsets.only(top: 5),
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-              width: MediaQuery.of(context).size.width,
-              height: search
-                  ? MediaQuery.of(context).size.height / 1.19
-                  : MediaQuery.of(context).size.height / 1.15,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
+                margin: EdgeInsets.only(top: 5),
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                width: MediaQuery.of(context).size.width,
+                height: search
+                    ? MediaQuery.of(context).size.height / 1.19
+                    : MediaQuery.of(context).size.height / 1.15,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
                 ),
-              ),
-              child: search
-                  ? buildSearchResultList()
-                  : ListView(
-                      children: [
-                        //chat Entries
-                        buildChatEntry('Alio Abdul', 'Hey Saleh',
-                            'images/pptest1.jpg', '12:00 PM', 1),
-                        SizedBox(height: 10),
-                        buildChatEntry('Ahmed', 'Hey Saleh',
-                            'images/pptest1.jpg', '10:00 PM', 79),
-                        //add more chat entries as needed
-                      ],
-                    ),
-            ),
+                child: search ? buildSearchResultList() : ChatRoomsList()),
           ],
         ),
       ),
@@ -348,6 +365,132 @@ class _HomeState extends State<Home> {
           },
         );
       },
+    );
+  }
+}
+
+class ChatRoomListTiles extends StatefulWidget {
+  final String lastMessage, chatRoomId, myUsername, time;
+  ChatRoomListTiles(
+      {required this.chatRoomId,
+      required this.lastMessage,
+      required this.myUsername,
+      required this.time});
+  @override
+  State<ChatRoomListTiles> createState() => _ChatRoomListState();
+}
+
+class _ChatRoomListState extends State<ChatRoomListTiles> {
+  String profilePhotoURL = "", username = "", id = "";
+  getUserInfo() async {
+    try {
+      username = widget.chatRoomId
+          .replaceAll("_", "")
+          .replaceAll(widget.myUsername, "");
+
+      QuerySnapshot querySnapshot =
+          await DatabaseMethods().getUserInfo(username.toLowerCase());
+
+      print("Query snapshot size: ${querySnapshot.size}");
+
+      // Check if there are any documents in the query result
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot firstDoc = querySnapshot.docs[0];
+        profilePhotoURL = firstDoc.get("Photo") ?? "";
+        id = firstDoc.get("id") ?? "";
+        username = firstDoc.get("Username") ?? "";
+        setState(() {});
+      } else {
+        // Handle the case where no documents are found
+        print("No documents found for user $username");
+        // Set default values
+        profilePhotoURL =
+            "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg"; // Provide a default URL or an empty string
+        id = "Unknown"; // Provide a default ID or an empty string
+        username = "Unknown";
+        setState(() {});
+      }
+    } catch (e) {
+      print("Error in getUserInfo: $e");
+      // Handle the error as needed
+    }
+  }
+
+  @override
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          profilePhotoURL == ""
+              ? CircularProgressIndicator()
+              :
+              //user Profile Image
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.network(
+                    profilePhotoURL,
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+          SizedBox(width: 16.0),
+          //chat Information
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 2.0),
+              //username
+              Text(
+                username,
+                style: TextStyle(
+                  fontFamily: 'FuturaLight',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              //chat Text
+              Text(
+                widget.lastMessage,
+                style: TextStyle(
+                  fontFamily: 'Montserrat-R',
+                  fontSize: 18,
+                  color: Colors.black45,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          //time and Message Count
+          Column(
+            children: [
+              Text(widget.time),
+              SizedBox(height: 10),
+              //TO DO LIST
+              // Container(
+              //   padding: EdgeInsets.all(5),
+              //   decoration: BoxDecoration(
+              //     color: Colors.purpleAccent,
+              //     borderRadius: BorderRadius.circular(90),
+              //   ),
+              //   child: Text(
+              //     ' $messageCount ',
+              //     style: TextStyle(fontSize: 16),
+              //   ),
+              // ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
