@@ -1,3 +1,4 @@
+import 'package:chatappdemo1/Pages/homepage.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:flutter/material.dart';
 import 'package:chatappdemo1/services/database.dart';
@@ -39,33 +40,42 @@ class _AddFriendState extends State<AddFriend> {
         recipientId = await DatabaseMethods()
             .getUserIdByUsername(friendUsername) as String;
 
-        // Get local friends
-        Set<String> localFriends = await SharedPreference().getFriendsList();
+        // Check if friend request already sent
+        bool requestExists = await DatabaseMethods()
+            .checkFriendRequestExist(senderId, recipientId);
 
-        // Check if already friends
-        if (localFriends.contains(recipientId)) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("You are already friends with $friendUsername"),
-          ));
-        } else {
-          // Check if friend request already sent
-          bool requestExists = await DatabaseMethods()
-              .checkFriendRequestExist(senderId, recipientId);
+        if (requestExists) {
+          // Check if the friend request is accepted
+          String requestStatus = await DatabaseMethods()
+              .checkFriendRequestStatus(senderId, recipientId);
 
-          if (requestExists) {
-            // Show a snack bar if the request has already been sent
+          if (requestStatus == "accepted") {
+            // Show a snack bar if the request has already been accepted
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Friend request has already been sent"),
+              content: Text("Friend request has already been accepted"),
             ));
             updateFriendRequestsList();
-          } else {
-            // Send friend request and update the list
-            await DatabaseMethods().sendFriendRequest(senderId, recipientId);
+          } else if (requestStatus == "pending") {
+            //await DatabaseMethods().sendFriendRequest(senderId, recipientId);
+            // Show a snack bar if the request has already been accepted
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Friend request is pending"),
+            ));
             updateFriendRequestsList();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Friend request sent successfully")),
-            );
+          } else if (requestExists == "rejected") {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Friend request is rejected"),
+            ));
+            updateFriendRequestsList();
           }
+        } else {
+          // Send friend request and update the list
+          print("No existing friend request, sending new request");
+          await DatabaseMethods().sendFriendRequest(senderId, recipientId);
+          updateFriendRequestsList();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Friend request sent successfully")),
+          );
         }
       } catch (t) {
         // Show a snack bar if username not found
@@ -105,13 +115,19 @@ class _AddFriendState extends State<AddFriend> {
       }
 
       //accept friend request and update local friends list
-      await DatabaseMethods().acceptFriendRequest(senderId, friendId);
+      await DatabaseMethods().acceptFriendRequest(friendId, senderId);
       Set<String> localFriends = await (SharedPreference().getFriendsList());
-      localFriends.add(friendId);
+      localFriends.add(friendUsername);
       await SharedPreference().setFriendsList(localFriends.toList());
       updateFriendRequestsList();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Friend request accepted")),
+      );
+      //refresh the Home page
+      Navigator.pop(context); //close the AddFriend page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -128,7 +144,7 @@ class _AddFriendState extends State<AddFriend> {
           await DatabaseMethods().getUserIdByUsername(friendUsername) as String;
 
       // Logic to remove or update the friend request status
-
+      await DatabaseMethods().rejectFriendRequest(friendId, senderId);
       // Update the friend requests list after rejecting
       updateFriendRequestsList();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

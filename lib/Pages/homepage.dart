@@ -1,4 +1,5 @@
 import 'package:chatappdemo1/Pages/chat.dart';
+import 'package:chatappdemo1/Pages/setting.dart';
 import 'package:chatappdemo1/services/database.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,7 +18,7 @@ class _HomeState extends State<Home> {
   //for changing widget state
   bool search = false;
   //storing info for chatroom
-  String? myUserName, myProfilePhoto, myEmail;
+  String? myUserName, myProfilePhoto, myEmail, fullName;
   //for search functions
   //this one stores the friends list
   List<String> localFriends = [];
@@ -74,6 +75,17 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // This method will be called when dependencies change,
+    // including when navigating back to this screen.
+    if (isMounted) {
+      getSharedPref();
+      setState(() {});
+    }
+  }
+
   //load user data from shared preferences
   void onLoad() async {
     //gets local data
@@ -86,6 +98,14 @@ class _HomeState extends State<Home> {
     if (isMounted) {
       setState(() {});
     }
+
+    // Add the following code to refresh local friends when navigating back
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (isMounted) {
+        initLocalFriends();
+        setState(() {});
+      }
+    });
   }
 
   //get user data from shared preference
@@ -98,19 +118,18 @@ class _HomeState extends State<Home> {
 
   void initLocalFriends() async {
     //check if the local friends list is already populated
-    if (localFriends.isEmpty) {
-      //fetch the friends list from Firebase
-      List<String> firebaseFriends = await DatabaseMethods().getUserFriends();
 
-      //save the friends list to SharedPreferences
-      await SharedPreference().setFriendsList(firebaseFriends);
+    //fetch the friends list from Firebase
+    List<String> firebaseFriends = await DatabaseMethods().getUserFriends();
 
-      //update the localFriends state
-      setState(() {
-        localFriends = firebaseFriends;
-        print('Local friends: $localFriends');
-      });
-    }
+    //save the friends list to SharedPreferences
+    await SharedPreference().setFriendsList(firebaseFriends);
+
+    //update the localFriends state
+    setState(() {
+      localFriends = firebaseFriends;
+      print('Local friends: $localFriends');
+    });
   }
 
   List<String> filterFriendsList(String searchQuery) {
@@ -213,24 +232,60 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                   //search Icon
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        search = !search;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: Colors.purpleAccent,
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            search = !search;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.purpleAccent,
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                          ),
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.black,
+                      PopupMenuButton<String>(
+                        icon: Icon(
+                          Icons.more_vert_rounded,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                        onSelected: (value) {
+                          if (value == 'settings') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => settings(
+                                    fullname: fullName,
+                                    profileURL: myProfilePhoto,
+                                    userName: myUserName),
+                              ),
+                            );
+                          }
+                        },
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<String>>[
+                          PopupMenuItem<String>(
+                            value:
+                                'settings', // <-- Corrected value to match the one in onSelected
+                            child: Text(
+                              'Settings',
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: "Montserrat-R"),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -424,72 +479,83 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(5),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          profilePhotoURL == ""
-              ? CircularProgressIndicator()
-              :
-              //user Profile Image
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.network(
-                    profilePhotoURL,
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatSection(
+                      userName: username,
+                      profileURL: profilePhotoURL,
+                    )));
+      },
+      child: Container(
+        margin: EdgeInsets.all(5),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            profilePhotoURL == ""
+                ? CircularProgressIndicator()
+                :
+                //user Profile Image
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Image.network(
+                      profilePhotoURL,
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+            SizedBox(width: 16.0),
+            //chat Information
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 2.0),
+                //username
+                Text(
+                  username,
+                  style: TextStyle(
+                    fontFamily: 'FuturaLight',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
                 ),
-          SizedBox(width: 16.0),
-          //chat Information
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 2.0),
-              //username
-              Text(
-                username,
-                style: TextStyle(
-                  fontFamily: 'FuturaLight',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                //chat Text
+                Text(
+                  widget.lastMessage,
+                  style: TextStyle(
+                    fontFamily: 'Montserrat-R',
+                    fontSize: 18,
+                    color: Colors.black45,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
-              ),
-              //chat Text
-              Text(
-                widget.lastMessage,
-                style: TextStyle(
-                  fontFamily: 'Montserrat-R',
-                  fontSize: 18,
-                  color: Colors.black45,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ],
-          ),
-          Spacer(),
-          //time and Message Count
-          Column(
-            children: [
-              Text(widget.time),
-              SizedBox(height: 10),
-              //TO DO LIST
-              // Container(
-              //   padding: EdgeInsets.all(5),
-              //   decoration: BoxDecoration(
-              //     color: Colors.purpleAccent,
-              //     borderRadius: BorderRadius.circular(90),
-              //   ),
-              //   child: Text(
-              //     ' $messageCount ',
-              //     style: TextStyle(fontSize: 16),
-              //   ),
-              // ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            Spacer(),
+            //time and Message Count
+            Column(
+              children: [
+                Text(widget.time),
+                SizedBox(height: 10),
+                //TO DO LIST
+                // Container(
+                //   padding: EdgeInsets.all(5),
+                //   decoration: BoxDecoration(
+                //     color: Colors.purpleAccent,
+                //     borderRadius: BorderRadius.circular(90),
+                //   ),
+                //   child: Text(
+                //     ' $messageCount ',
+                //     style: TextStyle(fontSize: 16),
+                //   ),
+                // ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

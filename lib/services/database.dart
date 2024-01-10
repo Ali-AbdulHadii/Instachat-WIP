@@ -1,5 +1,7 @@
 //functions related to database methods
 
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +10,33 @@ import 'package:flutter/material.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  //upload photo
+  Future<String?> uploadUserProfilePhoto(File imageFile) async {
+    try {
+      String userId = await SharedPreference().getUserID() as String;
+      String fileName = 'profile_image_$userId.jpg';
+
+      //upload image to Firebase Storage
+      TaskSnapshot snapshot = await FirebaseStorage.instance
+          .ref('profile_image_$userId.jpg')
+          .putFile(imageFile);
+      // Get the download URL
+      String photoURL = await snapshot.ref.getDownloadURL();
+      //update users photo URL in Firestore
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .update({'Photo': photoURL});
+      //refresh the user to get the updated user data
+      await FirebaseAuth.instance.currentUser!.reload();
+
+      return photoURL;
+    } catch (e) {
+      print('Error uploading profile photo: $e');
+      return null;
+    }
+  }
+
   //get chatrooms
   Future<Stream<QuerySnapshot>> getChatRooms() async {
     String? myUsername = await SharedPreference().getUserName();
@@ -127,31 +156,57 @@ class DatabaseMethods {
     return querySnapshot.docs.isNotEmpty;
   }
 
+  //check friends request status
+  Future<String> checkFriendRequestStatus(
+      String senderId, String recipientId) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("friendRequests")
+          .where("senderId", isEqualTo: senderId)
+          .where("recipientId", isEqualTo: recipientId)
+          .get();
+
+      //check if there is a document in the query result
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot docSnapshot = querySnapshot.docs[0];
+
+        //check the status of the friend request
+        String status = docSnapshot.get("status") ?? "";
+        return status;
+      }
+      return "Document is Empty";
+      //no document found, implicitly return null (void)
+    } catch (e) {
+      print("Error checking friend request status: $e");
+      return "Exception Error";
+    }
+  }
+
   //function to accept a friend request
   Future<void> acceptFriendRequest(String senderId, String recipientId) async {
     try {
-      // Get sender's username
+      //get sender's username
       String? senderUsername = await getUsernameByUserId(senderId);
 
-      // Get recipient's username
+      //get recipient's username
       String? recipientUsername = await getUsernameByUserId(recipientId);
 
       if (senderUsername != null && recipientUsername != null) {
-        // Update sender's friends collection with recipient's username
+        //update sender's friends collection with recipient's username
         DocumentReference senderDoc =
             FirebaseFirestore.instance.collection("users").doc(senderId);
         await senderDoc.update({
           'friends': FieldValue.arrayUnion([recipientUsername])
         });
 
-        // Update recipient's friends collection with sender's username
+        //update recipient's friends collection with sender's username
         DocumentReference recipientDoc =
             FirebaseFirestore.instance.collection("users").doc(recipientId);
         await recipientDoc.update({
           'friends': FieldValue.arrayUnion([senderUsername])
         });
 
-        // Remove the friend request entry
+        //updates the friend request entry
         await FirebaseFirestore.instance
             .collection("friendRequests")
             .where("senderId", isEqualTo: senderId)
@@ -159,13 +214,13 @@ class DatabaseMethods {
             .get()
             .then((querySnapshot) {
           querySnapshot.docs.forEach((doc) {
-            doc.reference.delete();
+            doc.reference.update({'status': 'accepted'});
           });
         });
 
         // TODO: Update local friends list if needed
       } else {
-        // Handle the case where usernames are not available
+        //handle the case where usernames are not available
         print(
             "Error: Usernames not found for senderId: $senderId or recipientId: $recipientId");
       }

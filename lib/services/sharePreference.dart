@@ -76,7 +76,7 @@ class SharedPreference {
   //get function to get friends list
   Future<Set<String>> getFriendsList() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final List<String>? friendsList = prefs.getStringList('friends');
+    final List<String>? friendsList = prefs.getStringList(friendsListKey);
     return Set<String>.from(friendsList ?? []);
   }
 }

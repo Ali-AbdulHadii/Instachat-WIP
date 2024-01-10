@@ -1,6 +1,8 @@
 import 'package:chatappdemo1/Pages/Login.dart';
 import 'package:chatappdemo1/Pages/chat.dart';
 import 'package:chatappdemo1/Pages/homepage.dart';
+import 'package:chatappdemo1/Pages/signUp.dart';
+import 'package:chatappdemo1/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,7 +27,8 @@ class MyApp extends StatelessWidget {
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
+        // the application has a purple toolbar. Then, with
+        //out quitting the app,
         // try changing the seedColor in the colorScheme below to Colors.green
         // and then invoke "hot reload" (save your changes or press the "hot
         // reload" button in a Flutter-supported IDE, or press "r" if you used
@@ -40,7 +43,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginPage(),
+      home: FutureBuilder(
+          future: AuthMethods().getCurrentUser(),
+          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasData) {
+              return Home();
+            } else {
+              return signUp();
+            }
+          }),
     );
   }
 }
