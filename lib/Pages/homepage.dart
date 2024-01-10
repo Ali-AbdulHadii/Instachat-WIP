@@ -492,7 +492,7 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
                     )));
       },
       child: Container(
-        margin: EdgeInsets.all(5),
+        margin: EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
