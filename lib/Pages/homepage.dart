@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   //for changing widget state
   bool search = false;
   //storing info for chatroom
-  String? myUserName, myProfilePhoto, myEmail, fullName;
+  String? myUserName, myProfilePhoto, myEmail, fullName, myId;
   //for search functions
   //this one stores the friends list
   List<String> localFriends = [];
@@ -113,6 +113,7 @@ class _HomeState extends State<Home> {
     myUserName = await SharedPreference().getUserName() as String;
     myProfilePhoto = await SharedPreference().getUserPhoto() as String;
     myEmail = await SharedPreference().getUserEmail() as String;
+    myId = await SharedPreference().getUserID() as String;
     setState(() {});
   }
 
@@ -264,9 +265,10 @@ class _HomeState extends State<Home> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => settings(
-                                    fullname: fullName,
-                                    profileURL: myProfilePhoto,
-                                    userName: myUserName),
+                                  fullname: fullName,
+                                  profileURL: myProfilePhoto,
+                                  userName: myUserName,
+                                ),
                               ),
                             );
                           }
@@ -495,7 +497,16 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             profilePhotoURL == ""
-                ? CircularProgressIndicator()
+                ? ClipRRect(
+                    //placeholder
+                    borderRadius: BorderRadius.circular(50),
+                    child: Image.network(
+                      "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg",
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                    ),
+                  )
                 :
                 //user Profile Image
                 ClipRRect(
@@ -523,13 +534,17 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
                   ),
                 ),
                 //chat Text
-                Text(
-                  widget.lastMessage,
-                  style: TextStyle(
-                    fontFamily: 'Montserrat-R',
-                    fontSize: 18,
-                    color: Colors.black45,
-                    fontWeight: FontWeight.normal,
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: Text(
+                    widget.lastMessage,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat-R',
+                      fontSize: 18,
+                      color: Colors.black45,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ),
               ],

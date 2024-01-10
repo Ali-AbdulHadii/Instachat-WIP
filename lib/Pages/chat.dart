@@ -215,7 +215,8 @@ class _ChatSectionState extends State<ChatSection> {
                   ),
                   SizedBox(width: 20.0),
                   Container(
-                    child: CircleAvatar(backgroundColor: Colors.black),
+                    child: CircleAvatar(
+                        backgroundImage: NetworkImage(widget.profileURL!)),
                   ),
                   SizedBox(
                     width: 12.0,

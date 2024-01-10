@@ -129,6 +129,9 @@ androidx/core/view/accessibility/AccessibilityEventCompat$ContentChangeType.clas
 androidx/core/widget/TextViewCompat$AutoSizeTextType.class
 androidx/exifinterface/media/ExifInterface$ExifStreamType.class
 androidx/exifinterface/media/ExifInterface$IfdType.class
+androidx/heifwriter/HeifEncoder$InputMode.class
+androidx/heifwriter/HeifWriter$InputMode.class
+androidx/heifwriter/Texture2dProgram$ProgramType.class
 androidx/lifecycle/Lifecycle$Event.class
 androidx/lifecycle/LifecycleCoroutineScope.class
 androidx/lifecycle/LifecycleRegistry.class

@@ -10,6 +10,30 @@ import 'package:flutter/material.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  //create or update user's display name in firebase
+  Future<void> updateDisplayName(String userId, String newName) async {
+    try {
+      //checl the docs
+      DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
+          .instance
+          .collection("users")
+          .doc(userId)
+          .get();
+      if (userDoc.exists) {
+        //update name
+        await userDoc.reference.update({'Fullname': newName});
+      } else {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(userId)
+            .set({'Fullname': newName});
+      }
+      print("Users name updated successfully");
+    } catch (e) {
+      print("Error Updating user's name: $e");
+    }
+  }
+
   //upload photo
   Future<String?> uploadUserProfilePhoto(File imageFile) async {
     try {

@@ -170,6 +170,36 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "flutter_image_compress",
+      "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_image_compress-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_image_compress_common",
+      "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_image_compress_common-1.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_image_compress_macos",
+      "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_image_compress_macos-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_image_compress_platform_interface",
+      "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_image_compress_platform_interface-1.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_image_compress_web",
+      "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_image_compress_web-0.1.3+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-3.0.1",
       "packageUri": "lib/",
@@ -458,7 +488,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-01-10T06:54:42.861280Z",
+  "generated": "2024-01-10T07:44:02.803733Z",
   "generator": "pub",
   "generatorVersion": "3.2.3"
 }
