@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:chatappdemo1/Pages/addfriend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key});
@@ -179,137 +180,142 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.amber,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.amber,
-              Colors.orange,
-              Colors.red,
-              Colors.purple,
-              Colors.deepPurple.shade700
-            ],
+      body: Flexible(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.amber,
+                Colors.orange,
+                Colors.red,
+                Colors.purple,
+                Colors.deepPurple.shade700
+              ],
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            //top Row with Search and App Name
-            Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25, top: 45),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  //search bar when activated
-                  search
-                      ? Expanded(
-                          child: TextField(
-                            onChanged: (value) {
-                              //search function
-
-                              initialSearch(value);
-                            },
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Search Username',
-                              hintStyle: TextStyle(
-                                fontFamily: "Montserrat-R",
-                                fontSize: 18,
-                                color: Colors.black38,
-                              ),
-                            ),
-                            style: TextStyle(
-                              fontFamily: "Montserrat-R",
-                              fontSize: 18,
-                            ),
-                          ),
-                        )
-                      //app Name when not searching
-                      : Text(
-                          'Instachat',
-                          style: TextStyle(
-                            fontFamily: 'FuturaLight',
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                  //search Icon
-                  Row(
+          child: Flexible(
+            child: Column(
+              children: [
+                //top Row with Search and App Name
+                Padding(
+                  padding: const EdgeInsets.only(left: 25, right: 25, top: 45),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            search = !search;
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Colors.purpleAccent,
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                          ),
-                          child: Icon(
-                            Icons.search,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      PopupMenuButton<String>(
-                        icon: Icon(
-                          Icons.more_vert_rounded,
-                          color: Colors.black,
-                          size: 30,
-                        ),
-                        onSelected: (value) {
-                          if (value == 'settings') {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => settings(
-                                  fullname: fullName,
-                                  profileURL: myProfilePhoto,
-                                  userName: myUserName,
+                      //search bar when activated
+                      search
+                          ? Expanded(
+                              child: TextField(
+                                onChanged: (value) {
+                                  //search function
+
+                                  initialSearch(value);
+                                },
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Search Username',
+                                  hintStyle: TextStyle(
+                                    fontFamily: "Montserrat-R",
+                                    fontSize: 18,
+                                    color: Colors.black38,
+                                  ),
+                                ),
+                                style: TextStyle(
+                                  fontFamily: "Montserrat-R",
+                                  fontSize: 18,
                                 ),
                               ),
-                            );
-                          }
-                        },
-                        itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<String>>[
-                          PopupMenuItem<String>(
-                            value:
-                                'settings', // <-- Corrected value to match the one in onSelected
-                            child: Text(
-                              'Settings',
+                            )
+                          //app Name when not searching
+                          : Text(
+                              'Instachat',
                               style: TextStyle(
-                                  fontSize: 16, fontFamily: "Montserrat-R"),
+                                fontFamily: 'FuturaLight',
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                      //search Icon
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                search = !search;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Colors.purpleAccent,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50)),
+                              ),
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
+                          PopupMenuButton<String>(
+                            icon: Icon(
+                              Icons.more_vert_rounded,
+                              color: Colors.black,
+                              size: 30,
+                            ),
+                            onSelected: (value) {
+                              if (value == 'settings') {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => settings(
+                                      fullname: fullName,
+                                      profileURL: myProfilePhoto,
+                                      userName: myUserName,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            itemBuilder: (BuildContext context) =>
+                                <PopupMenuEntry<String>>[
+                              PopupMenuItem<String>(
+                                value:
+                                    'settings', // <-- Corrected value to match the one in onSelected
+                                child: Text(
+                                  'Settings',
+                                  style: TextStyle(
+                                      fontSize: 16, fontFamily: "Montserrat-R"),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
-                      ),
+                      )
                     ],
-                  )
-                ],
-              ),
-            ),
-            //container for Chat Entries
-            Container(
-                margin: EdgeInsets.only(top: 5),
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                width: MediaQuery.of(context).size.width,
-                height: search
-                    ? MediaQuery.of(context).size.height / 1.19
-                    : MediaQuery.of(context).size.height / 1.15,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
                   ),
                 ),
-                child: search ? buildSearchResultList() : ChatRoomsList()),
-          ],
+                //container for Chat Entries
+                Container(
+                    margin: EdgeInsets.only(top: 5),
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                    width: MediaQuery.of(context).size.width,
+                    height: search
+                        ? MediaQuery.of(context).size.height / 1.19
+                        : MediaQuery.of(context).size.height / 1.15,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: search ? buildSearchResultList() : ChatRoomsList()),
+              ],
+            ),
+          ),
         ),
       ),
       //floating Action Button for Adding Friends
@@ -404,21 +410,26 @@ class _HomeState extends State<Home> {
         return ListTile(
           title: Text(friendName),
           onTap: () async {
+            //capture the context before entering the asynchronous block
+            final currentContext = context;
             //handle tapping on the search result, open chat
             var chatId = getChatIdbyUsername(myUserName!, friendName);
             Map<String, dynamic> chatDataMap = {
               "users": [myUserName, friendName]
             };
             await DatabaseMethods().createChatRoom(chatId, chatDataMap);
+            String friendPhotoCached = await DatabaseMethods()
+                .getFriendPhotoURL(friendName)
+                .toString();
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ChatSection(
-                          userName: friendName,
-                          profileURL: DatabaseMethods()
-                              .getFriendPhotoURL(friendName)
-                              .toString(),
-                        )));
+              currentContext,
+              MaterialPageRoute(
+                builder: (context) => ChatSection(
+                  userName: friendName,
+                  profileURL: friendPhotoCached,
+                ),
+              ),
+            );
           },
         );
       },
@@ -428,11 +439,12 @@ class _HomeState extends State<Home> {
 
 class ChatRoomListTiles extends StatefulWidget {
   final String lastMessage, chatRoomId, myUsername, time;
-  ChatRoomListTiles(
-      {required this.chatRoomId,
-      required this.lastMessage,
-      required this.myUsername,
-      required this.time});
+  ChatRoomListTiles({
+    required this.chatRoomId,
+    required this.lastMessage,
+    required this.myUsername,
+    required this.time,
+  });
   @override
   State<ChatRoomListTiles> createState() => _ChatRoomListState();
 }
@@ -450,7 +462,7 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
 
       print("Query snapshot size: ${querySnapshot.size}");
 
-      // Check if there are any documents in the query result
+      //check if there are any documents in the query result
       if (querySnapshot.docs.isNotEmpty) {
         DocumentSnapshot firstDoc = querySnapshot.docs[0];
         profilePhotoURL = firstDoc.get("Photo") ?? "";
@@ -458,18 +470,18 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
         username = firstDoc.get("Username") ?? "";
         setState(() {});
       } else {
-        // Handle the case where no documents are found
+        //handle the case where no documents are found
         print("No documents found for user $username");
-        // Set default values
+        //set default values
         profilePhotoURL =
             "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg"; // Provide a default URL or an empty string
-        id = "Unknown"; // Provide a default ID or an empty string
+        id = "Unknown";
         username = "Unknown";
         setState(() {});
       }
     } catch (e) {
       print("Error in getUserInfo: $e");
-      // Handle the error as needed
+      //handle exception
     }
   }
 
@@ -496,6 +508,7 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //use cached network images widget to load and cache
             profilePhotoURL == ""
                 ? ClipRRect(
                     //placeholder
@@ -509,13 +522,22 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
                   )
                 :
                 //user Profile Image
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.network(
-                      profilePhotoURL,
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
+                CachedNetworkImage(
+                    memCacheWidth: 45,
+                    memCacheHeight: 60,
+                    maxHeightDiskCache: 60,
+                    maxWidthDiskCache: 45,
+                    imageUrl: profilePhotoURL,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    imageBuilder: (context, imageProvider) => ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.network(
+                        profilePhotoURL,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
             SizedBox(width: 16.0),

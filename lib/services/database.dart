@@ -41,9 +41,8 @@ class DatabaseMethods {
       String fileName = 'profile_image_$userId.jpg';
 
       //upload image to Firebase Storage
-      TaskSnapshot snapshot = await FirebaseStorage.instance
-          .ref('profile_image_$userId.jpg')
-          .putFile(imageFile);
+      TaskSnapshot snapshot =
+          await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
       // Get the download URL
       String photoURL = await snapshot.ref.getDownloadURL();
       //update users photo URL in Firestore

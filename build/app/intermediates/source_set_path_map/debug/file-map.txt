@@ -32,6 +32,10 @@ com.example.chatappdemo1.app-merged_res-30 C:\Users\aliab\OneDrive\Desktop\Insta
 com.example.chatappdemo1.app-packaged_res-31 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\cloud_firestore\intermediates\packaged_res\debug
 com.example.chatappdemo1.app-packaged_res-32 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\packaged_res\debug
 com.example.chatappdemo1.app-packaged_res-33 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_core\intermediates\packaged_res\debug
-com.example.chatappdemo1.app-packaged_res-34 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\debug
-com.example.chatappdemo1.app-packaged_res-35 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\image_picker_android\intermediates\packaged_res\debug
-com.example.chatappdemo1.app-packaged_res-36 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\shared_preferences_android\intermediates\packaged_res\debug
+com.example.chatappdemo1.app-packaged_res-34 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_storage\intermediates\packaged_res\debug
+com.example.chatappdemo1.app-packaged_res-35 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\flutter_image_compress_common\intermediates\packaged_res\debug
+com.example.chatappdemo1.app-packaged_res-36 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\debug
+com.example.chatappdemo1.app-packaged_res-37 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\image_picker_android\intermediates\packaged_res\debug
+com.example.chatappdemo1.app-packaged_res-38 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\path_provider_android\intermediates\packaged_res\debug
+com.example.chatappdemo1.app-packaged_res-39 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\shared_preferences_android\intermediates\packaged_res\debug
+com.example.chatappdemo1.app-packaged_res-40 C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\sqflite\intermediates\packaged_res\debug
