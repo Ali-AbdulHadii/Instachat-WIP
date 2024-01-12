@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
   bool isMounted = false;
   //stream var
   Stream? streamChatRooms;
+
   //chatroomid
   getChatIdbyUsername(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
@@ -37,29 +38,44 @@ class _HomeState extends State<Home> {
     }
   }
 
+  DatabaseMethods _databaseMethods = DatabaseMethods();
+
   //widget to get the list of all chats
   Widget ChatRoomsList() {
     return StreamBuilder(
-        stream: streamChatRooms,
-        builder: (context, AsyncSnapshot snapshot) {
-          return snapshot.hasData
-              ? ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: snapshot.data.docs.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot docSnapshot = snapshot.data.docs[index];
-                    return ChatRoomListTiles(
-                      chatRoomId: docSnapshot.id,
-                      lastMessage: docSnapshot["lastMessage"],
-                      myUsername: myUserName!,
-                      time: docSnapshot["lastMessageSendTs"],
-                    );
-                  })
-              : Center(
-                  child: CircularProgressIndicator(),
-                );
-        });
+      stream: streamChatRooms,
+      builder: (context, AsyncSnapshot snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: snapshot.data.docs.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot docSnapshot = snapshot.data.docs[index];
+
+                  // Use the instance to access unreadCounterStream
+                  return StreamBuilder<int>(
+                    stream: _databaseMethods.unreadCounterStream(
+                        docSnapshot.id, myUserName!),
+                    builder: (context, unreadCounterSnapshot) {
+                      int unreadCounter = unreadCounterSnapshot.data ?? 0;
+
+                      return ChatRoomListTiles(
+                        chatRoomId: docSnapshot.id,
+                        lastMessage: docSnapshot["lastMessage"],
+                        myUsername: myUserName!,
+                        time: docSnapshot["lastMessageSendTs"],
+                        unreadCounters: unreadCounter,
+                      );
+                    },
+                  );
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              );
+      },
+    );
   }
 
   @override
@@ -446,11 +462,14 @@ class _HomeState extends State<Home> {
 
 class ChatRoomListTiles extends StatefulWidget {
   final String lastMessage, chatRoomId, myUsername, time;
+  final int unreadCounters;
+
   ChatRoomListTiles({
     required this.chatRoomId,
     required this.lastMessage,
     required this.myUsername,
     required this.time,
+    required this.unreadCounters,
   });
   @override
   State<ChatRoomListTiles> createState() => _ChatRoomListState();
@@ -458,16 +477,24 @@ class ChatRoomListTiles extends StatefulWidget {
 
 class _ChatRoomListState extends State<ChatRoomListTiles> {
   String profilePhotoURL = "", username = "", userId = "";
+  int unreadCounter = 0;
+  Stream<int>? unreadCounterStream;
   getUserInfo() async {
     try {
       username = widget.chatRoomId
           .replaceAll("_", "")
           .replaceAll(widget.myUsername, "");
 
+      unreadCounter =
+          await DatabaseMethods().unreadMessagesCounter(username) as int;
       QuerySnapshot querySnapshot =
           await DatabaseMethods().getUserInfo(username.toLowerCase());
 
+      unreadCounterStream =
+          DatabaseMethods().unreadCounterStream(widget.chatRoomId, username);
+
       print("Query snapshot size: ${querySnapshot.size}");
+      //String? userId;
 
       //check if there are any documents in the query result
       if (querySnapshot.docs.isNotEmpty) {
@@ -504,6 +531,8 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
     return GestureDetector(
       //on tapping the user, enters the chatroom
       onTap: () {
+        //resetCounter
+        DatabaseMethods().resetUnreadCounter(widget.chatRoomId, username);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -582,22 +611,32 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
             ),
             Spacer(),
             //time and Message Count
-            Column(
-              children: [
-                Text(widget.time),
-                SizedBox(height: 10),
-                // Container(
-                //   padding: EdgeInsets.all(5),
-                //   decoration: BoxDecoration(
-                //     color: Colors.purpleAccent,
-                //     borderRadius: BorderRadius.circular(90),
-                //   ),
-                //   // child: Text(
-                //   //   ' ${widget.unreadCounter} ',
-                //   //   style: TextStyle(fontSize: 16),
-                //   // ),
-                // ),
-              ],
+            StreamBuilder<int>(
+              stream: unreadCounterStream,
+              builder: (context, snapshot) {
+                int unreadCounter = snapshot.data ?? 0;
+
+                return Column(
+                  children: [
+                    Text(widget.time),
+                    SizedBox(height: 10),
+                    Visibility(
+                      visible: unreadCounter > 0,
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Colors.purpleAccent,
+                          borderRadius: BorderRadius.circular(90),
+                        ),
+                        child: Text(
+                          ' $unreadCounter ',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),

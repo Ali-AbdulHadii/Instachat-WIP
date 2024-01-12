@@ -9,39 +9,69 @@ import 'package:flutter/material.dart';
 
 //integrates data to database
 class DatabaseMethods {
-  // Function to handle when a user enters a chat room
-  Future<void> resetUnreadCounter(String chatRoomId) async {
+  //Function to handle when a user enters a chat room
+  Future<void> resetUnreadCounter(chatroomId, myUsername) async {
     try {
-      // Update unreadCounter to 0
+      //Update unreadCounter to 0
       await FirebaseFirestore.instance
           .collection("chatrooms")
-          .doc(chatRoomId)
+          .doc(chatroomId)
           .update({
-        'unreadCounter': 0,
-      });
-      await FirebaseFirestore.instance
-          .collection("chatrooms")
-          .doc(chatRoomId)
-          .update({
-        'unreadCounter': 0,
+        'unreadCounter_$myUsername': 0,
       });
     } catch (e) {
-      print("Error Updaing Counter: $e");
+      print("error Updaing Counter: $e");
     }
   }
 
-  //unread counter function
-  Future<int> unreadMessagesCounter(chatroomIds, myUsername) async {
+  //unread counter function to retreive the unreadCounter
+  Future<int> unreadMessagesCounter(myUsername) async {
+    try {
+      QuerySnapshot chatroomsQuery = await FirebaseFirestore.instance
+          .collection("chatrooms")
+          .where("unreadCounter_$myUsername", isGreaterThan: 0)
+          .get();
+      int totalUnreadCount = 0;
+      if (chatroomsQuery.size > 0) {
+        //return the unreadCounter value from the first document
+        return chatroomsQuery.docs[0]["unreadCounter_$myUsername"] ?? 0;
+      } else {
+        //return 0 if no matching document is found
+        return 0;
+      }
+    } catch (e) {
+      print("error in getUnreadMessagesCount: $e");
+      return 0;
+    }
+  }
+
+  //test 1
+  Future<int> unread123MessagesCounter(chatRoomId, myUsername) async {
     try {
       DocumentSnapshot chatroomDoc = await FirebaseFirestore.instance
           .collection("chatrooms")
-          .doc(chatroomIds)
+          .doc(chatRoomId)
           .get();
       int unreadCounter = chatroomDoc["unreadCounter_$myUsername"] ?? 0;
       return unreadCounter;
     } catch (e) {
       print("Error in getUnreadMessagesCount: $e");
       return 0;
+    }
+  }
+
+  Stream<int> unreadCounterStream(chatRoomId, myUsername) {
+    try {
+      return FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(chatRoomId)
+          .snapshots()
+          .map((chatroomDoc) {
+        return chatroomDoc["unreadCounter_$myUsername"] ?? 0;
+      });
+    } catch (e) {
+      print("Error in unreadCounterStream: $e");
+      return Stream.value(0);
     }
   }
 
@@ -65,7 +95,7 @@ class DatabaseMethods {
       }
       print("Users name updated successfully");
     } catch (e) {
-      print("Error Updating user's name: $e");
+      print("error Updating user's name: $e");
     }
   }
 
@@ -78,7 +108,7 @@ class DatabaseMethods {
       //upload image to Firebase Storage
       TaskSnapshot snapshot =
           await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
-      // Get the download URL
+      //Get the download URL
       String photoURL = await snapshot.ref.getDownloadURL();
       //update users photo URL in Firestore
       await FirebaseFirestore.instance
@@ -90,7 +120,7 @@ class DatabaseMethods {
 
       return photoURL;
     } catch (e) {
-      print('Error uploading profile photo: $e');
+      print('error uploading profile photo: $e');
       return null;
     }
   }
@@ -130,10 +160,7 @@ class DatabaseMethods {
     return FirebaseFirestore.instance
         .collection("chatrooms")
         .doc(chatroomId)
-        .update({
-      ...lastMessageInfoMap,
-      "unreadCounter": FieldValue.increment(1),
-    });
+        .update(lastMessageInfoMap);
   }
 
   //add message function to firebase
@@ -180,7 +207,7 @@ class DatabaseMethods {
         return null;
       }
     } catch (e) {
-      print("Error getting photo URL: $e");
+      print("error getting photo URL: $e");
       return null;
     }
   }
@@ -194,7 +221,7 @@ class DatabaseMethods {
 
     querySnapshot.docs
         .forEach((DocumentSnapshot<Map<String, dynamic>> document) {
-      // Check if the 'friends' field exists and is an array in the document
+      //Check if the 'friends' field exists and is an array in the document
       if (document.data()!.containsKey('friends') &&
           document['friends'] is List<dynamic>) {
         List<dynamic> friends = document['friends'];
@@ -238,8 +265,8 @@ class DatabaseMethods {
       return "Document is Empty";
       //no document found, implicitly return null (void)
     } catch (e) {
-      print("Error checking friend request status: $e");
-      return "Exception Error";
+      print("error checking friend request status: $e");
+      return "Exception error";
     }
   }
 
@@ -279,15 +306,15 @@ class DatabaseMethods {
           });
         });
 
-        // TODO: Update local friends list if needed
+        //TODO: Update local friends list if needed
       } else {
         //handle the case where usernames are not available
         print(
-            "Error: Usernames not found for senderId: $senderId or recipientId: $recipientId");
+            "error: Usernames not found for senderId: $senderId or recipientId: $recipientId");
       }
     } catch (e) {
-      print("Error accepting friend request: $e");
-      // Handle the error as needed
+      print("error accepting friend request: $e");
+      //Handle the error as needed
     }
   }
 
@@ -311,7 +338,7 @@ class DatabaseMethods {
       //we add a 'status' field and set it to 'rejected'.
     } catch (e) {
       print("error rejecting friend request: $e");
-      // You might want to throw an exception or handle the error in a way that suits your application
+      //You might want to throw an exception or handle the error in a way that suits your application
     }
   }
 
@@ -347,7 +374,7 @@ class DatabaseMethods {
   //maping user details to firebase
   Future addUserDetails(
       Map<String, dynamic> userInformationMap, String id) async {
-    // Add 'friends' field to the user details map
+    //Add 'friends' field to the user details map
     userInformationMap['friends'] = [];
     //uploads the map to firebase, called from sign up
     return await FirebaseFirestore.instance
@@ -361,7 +388,7 @@ class DatabaseMethods {
     await FirebaseFirestore.instance.collection("friendRequests").add({
       'senderId': senderId,
       'recipientId': recipientId,
-      'status': 'pending', // more statuses needed
+      'status': 'pending', //more statuses needed
       'timestamp': FieldValue.serverTimestamp(),
     });
   }
@@ -406,12 +433,12 @@ class DatabaseMethods {
         return null;
       }
     } catch (e) {
-      print("Error fetching username for userID: $userId, Error: $e");
+      print("error fetching username for userID: $userId, error: $e");
       return null;
     }
   }
 
-  // Function to get usernames based on user IDs
+  //Function to get usernames based on user IDs
   Future<List<String>> getUsernameByUserIds(List<String> userIds) async {
     List<String> usernames = [];
 

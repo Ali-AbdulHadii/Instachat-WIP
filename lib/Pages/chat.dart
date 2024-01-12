@@ -30,7 +30,6 @@ class _ChatSectionState extends State<ChatSection> {
     myProfilePhoto = await SharedPreference().getUserPhoto();
     myEmail = await SharedPreference().getUserEmail();
     chatroomId = getChatIdbyUsername(widget.userName!, myUsername!);
-    friendUserId = widget.userName;
   }
 
   //chatroomid
@@ -110,9 +109,11 @@ class _ChatSectionState extends State<ChatSection> {
   //get and set msgs
   getAndSetMessage() async {
     messageStream = await DatabaseMethods().getChatroomMessages(chatroomId);
-    await DatabaseMethods().resetUnreadCounter(widget.userName!);
+    //await DatabaseMethods().resetUnreadCounter(widget.userName!);
     //setstate
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   //function to send the message
@@ -142,7 +143,7 @@ class _ChatSectionState extends State<ChatSection> {
           "lastMessageSendTs": formattedDate,
           "time": FieldValue.serverTimestamp(),
           "lastMessageSendBy": myUsername,
-          "unreadCounter_$friendUserId": FieldValue.increment(1),
+          "unreadCounter_$myUsername": FieldValue.increment(1),
         };
         DatabaseMethods()
             .updateLastMessageSent(chatroomId!, lastMessageInfoMap);
