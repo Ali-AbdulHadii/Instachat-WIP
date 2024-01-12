@@ -6,6 +6,7 @@ import 'package:chatappdemo1/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //debugging for now removed async
 void main() async {
@@ -24,34 +25,30 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, with
-        //out quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: FutureBuilder(
-          future: AuthMethods().getCurrentUser(),
-          builder: (context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.hasData) {
+      home: FutureBuilder<User?>(
+        future: AuthMethods().getCurrentUser(),
+        builder: (context, AsyncSnapshot<User?> snapshot) {
+          print("Connection State: ${snapshot.connectionState}");
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            print("Waiting for authentication...");
+
+            // While the Future is still running, show a loading indicator or splash screen.
+            return CircularProgressIndicator(); // You can replace this with your loading widget.
+          } else {
+            print("Authentication Data: ${snapshot.data}");
+            if (snapshot.hasData && snapshot.data != null) {
+              // User is authenticated, navigate to the home page.
               return Home();
             } else {
+              // User is not authenticated, navigate to the sign-up page.
               return signUp();
             }
-          }),
+          }
+        },
+      ),
     );
   }
 }

@@ -1,5 +1,4 @@
 //functions related to database methods
-
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
@@ -10,6 +9,42 @@ import 'package:flutter/material.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  // Function to handle when a user enters a chat room
+  Future<void> resetUnreadCounter(String chatRoomId) async {
+    try {
+      // Update unreadCounter to 0
+      await FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(chatRoomId)
+          .update({
+        'unreadCounter': 0,
+      });
+      await FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(chatRoomId)
+          .update({
+        'unreadCounter': 0,
+      });
+    } catch (e) {
+      print("Error Updaing Counter: $e");
+    }
+  }
+
+  //unread counter function
+  Future<int> unreadMessagesCounter(chatroomIds, myUsername) async {
+    try {
+      DocumentSnapshot chatroomDoc = await FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(chatroomIds)
+          .get();
+      int unreadCounter = chatroomDoc["unreadCounter_$myUsername"] ?? 0;
+      return unreadCounter;
+    } catch (e) {
+      print("Error in getUnreadMessagesCount: $e");
+      return 0;
+    }
+  }
+
   //create or update user's display name in firebase
   Future<void> updateDisplayName(String userId, String newName) async {
     try {
@@ -95,7 +130,10 @@ class DatabaseMethods {
     return FirebaseFirestore.instance
         .collection("chatrooms")
         .doc(chatroomId)
-        .update(lastMessageInfoMap);
+        .update({
+      ...lastMessageInfoMap,
+      "unreadCounter": FieldValue.increment(1),
+    });
   }
 
   //add message function to firebase

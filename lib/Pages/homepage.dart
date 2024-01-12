@@ -50,10 +50,11 @@ class _HomeState extends State<Home> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot docSnapshot = snapshot.data.docs[index];
                     return ChatRoomListTiles(
-                        chatRoomId: docSnapshot.id,
-                        lastMessage: docSnapshot["lastMessage"],
-                        myUsername: myUserName!,
-                        time: docSnapshot["lastMessageSendTs"]);
+                      chatRoomId: docSnapshot.id,
+                      lastMessage: docSnapshot["lastMessage"],
+                      myUsername: myUserName!,
+                      time: docSnapshot["lastMessageSendTs"],
+                    );
                   })
               : Center(
                   child: CircularProgressIndicator(),
@@ -399,6 +400,8 @@ class _HomeState extends State<Home> {
     );
   }
 
+  //
+  String? friendUserId;
   Widget buildSearchResultList() {
     return ListView.builder(
       padding: EdgeInsets.only(left: 5, right: 5),
@@ -415,8 +418,12 @@ class _HomeState extends State<Home> {
             //handle tapping on the search result, open chat
             var chatId = getChatIdbyUsername(myUserName!, friendName);
             Map<String, dynamic> chatDataMap = {
-              "users": [myUserName, friendName]
+              "users": [myUserName, friendName],
+              "unreadCounter_$myUserName": 0,
+              "unreadCounter_$friendName": 0,
             };
+            friendUserId =
+                await DatabaseMethods().getUsernameByUserId(friendName);
             await DatabaseMethods().createChatRoom(chatId, chatDataMap);
             String friendPhotoCached = await DatabaseMethods()
                 .getFriendPhotoURL(friendName)
@@ -450,7 +457,7 @@ class ChatRoomListTiles extends StatefulWidget {
 }
 
 class _ChatRoomListState extends State<ChatRoomListTiles> {
-  String profilePhotoURL = "", username = "", id = "";
+  String profilePhotoURL = "", username = "", userId = "";
   getUserInfo() async {
     try {
       username = widget.chatRoomId
@@ -466,8 +473,9 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
       if (querySnapshot.docs.isNotEmpty) {
         DocumentSnapshot firstDoc = querySnapshot.docs[0];
         profilePhotoURL = firstDoc.get("Photo") ?? "";
-        id = firstDoc.get("id") ?? "";
+
         username = firstDoc.get("Username") ?? "";
+        userId = firstDoc.get("id") ?? "";
         setState(() {});
       } else {
         //handle the case where no documents are found
@@ -475,7 +483,7 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
         //set default values
         profilePhotoURL =
             "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg"; // Provide a default URL or an empty string
-        id = "Unknown";
+        userId = "Unknown";
         username = "Unknown";
         setState(() {});
       }
@@ -494,6 +502,7 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      //on tapping the user, enters the chatroom
       onTap: () {
         Navigator.push(
             context,
@@ -577,17 +586,16 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
               children: [
                 Text(widget.time),
                 SizedBox(height: 10),
-                //TO DO LIST
                 // Container(
                 //   padding: EdgeInsets.all(5),
                 //   decoration: BoxDecoration(
                 //     color: Colors.purpleAccent,
                 //     borderRadius: BorderRadius.circular(90),
                 //   ),
-                //   child: Text(
-                //     ' $messageCount ',
-                //     style: TextStyle(fontSize: 16),
-                //   ),
+                //   // child: Text(
+                //   //   ' ${widget.unreadCounter} ',
+                //   //   style: TextStyle(fontSize: 16),
+                //   // ),
                 // ),
               ],
             ),

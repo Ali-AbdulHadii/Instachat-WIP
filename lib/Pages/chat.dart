@@ -2,12 +2,9 @@ import 'package:chatappdemo1/services/database.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/file.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
 import 'package:chatappdemo1/Pages/homepage.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class ChatSection extends StatefulWidget {
   String? userName, profileURL;
@@ -25,11 +22,15 @@ class _ChatSectionState extends State<ChatSection> {
   //stream message
   Stream? messageStream;
 
+  //friends userId
+  String? friendUserId;
+
   getSharePrefs() async {
     myUsername = await SharedPreference().getUserName();
     myProfilePhoto = await SharedPreference().getUserPhoto();
     myEmail = await SharedPreference().getUserEmail();
     chatroomId = getChatIdbyUsername(widget.userName!, myUsername!);
+    friendUserId = widget.userName;
   }
 
   //chatroomid
@@ -109,6 +110,7 @@ class _ChatSectionState extends State<ChatSection> {
   //get and set msgs
   getAndSetMessage() async {
     messageStream = await DatabaseMethods().getChatroomMessages(chatroomId);
+    await DatabaseMethods().resetUnreadCounter(widget.userName!);
     //setstate
     setState(() {});
   }
@@ -127,6 +129,7 @@ class _ChatSectionState extends State<ChatSection> {
         "ts": formattedDate,
         "time": FieldValue.serverTimestamp(),
         "imgUrl": myProfilePhoto,
+        "isRead": false,
       };
       //generate randomID for msgs
       messageId ??= randomID();
@@ -139,6 +142,7 @@ class _ChatSectionState extends State<ChatSection> {
           "lastMessageSendTs": formattedDate,
           "time": FieldValue.serverTimestamp(),
           "lastMessageSendBy": myUsername,
+          "unreadCounter_$friendUserId": FieldValue.increment(1),
         };
         DatabaseMethods()
             .updateLastMessageSent(chatroomId!, lastMessageInfoMap);
