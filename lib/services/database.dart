@@ -9,6 +9,38 @@ import 'package:flutter/material.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  //stream userStatus
+  Stream<DocumentSnapshot> userStatusStream(String userName) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userName)
+        .snapshots()
+        .handleError((error) {
+      print("error getting user status: $error");
+    });
+  }
+
+  //user status (Online, or empty eg..), and maybe last seen
+  Future<void> updateUserStatus(String userName, String status) async {
+    try {
+      final userDoc =
+          FirebaseFirestore.instance.collection("users").doc(userName);
+
+      if ((await userDoc.get()).exists) {
+        await userDoc.update({
+          'status': status,
+        });
+      } else {
+        print("document with username $userName does not exist");
+        // await userDoc.set({
+        //   'status': status,
+        // });
+      }
+    } catch (e) {
+      print("error updating user status: $e");
+    }
+  }
+
   //Function to handle when a user enters a chat room
   Future<void> resetUnreadCounter(chatroomId, myUsername) async {
     try {
@@ -412,6 +444,19 @@ class DatabaseMethods {
       return querySnapshot.docs.first.id;
     } else {
       return null;
+    }
+  }
+
+  Future<String?> getUserDisplaynameByUsername(String username) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .where("Username", isEqualTo: username)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return querySnapshot.docs.first.get("Fullname");
+    } else {
+      return "";
     }
   }
 

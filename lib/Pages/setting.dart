@@ -12,11 +12,12 @@ import 'package:provider/provider.dart';
 class settings extends StatefulWidget {
   //const settings({super.key});
   String? userName, profileURL, fullname;
-  settings(
-      {super.key,
-      required this.userName,
-      required this.profileURL,
-      required this.fullname});
+  settings({
+    super.key,
+    required this.userName,
+    required this.profileURL,
+    required this.fullname,
+  });
 
   @override
   State<settings> createState() => _settingsState();

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chatappdemo1/services/database.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,8 +9,11 @@ import 'dart:math' as math;
 import 'package:chatappdemo1/Pages/homepage.dart';
 
 class ChatSection extends StatefulWidget {
-  String? userName, profileURL;
-  ChatSection({required this.userName, required this.profileURL});
+  String? userName, profileURL, displayName;
+  ChatSection(
+      {required this.userName,
+      required this.profileURL,
+      required this.displayName});
 
   @override
   State<ChatSection> createState() => _ChatSectionState();
@@ -22,8 +27,25 @@ class _ChatSectionState extends State<ChatSection> {
   //stream message
   Stream? messageStream;
 
-  //friends userId
-  String? friendUserId;
+  //friends userId, stream friend status
+  String? friendUserId, friendStatus = "";
+  StreamSubscription<DocumentSnapshot>? friendStatusSubscription;
+  void getAndListenFriendStatus() async {
+    friendUserId =
+        await DatabaseMethods().getUserIdByUsername(widget.userName!);
+    friendStatusSubscription =
+        DatabaseMethods().userStatusStream(friendUserId!).listen((event) {
+      if (event.exists) {
+        dynamic data = event.data();
+        //check if data is not null and has the status field
+        if (data != null && data['status'] != null) {
+          setState(() {
+            friendStatus = data['status'] as String;
+          });
+        }
+      }
+    });
+  }
 
   getSharePrefs() async {
     myUsername = await SharedPreference().getUserName();
@@ -159,6 +181,7 @@ class _ChatSectionState extends State<ChatSection> {
     await getSharePrefs();
     await getAndSetMessage();
     setState(() {});
+    getAndListenFriendStatus();
   }
 
   //init state
@@ -167,6 +190,24 @@ class _ChatSectionState extends State<ChatSection> {
     super.initState();
     onLoad();
   }
+
+  @override
+  void dispose() {
+    friendStatusSubscription?.cancel();
+    super.dispose();
+  }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.resumed) {
+  //     // App is in foreground
+  //     DatabaseMethods().updateUserStatus(widget.userName!, "Online");
+  //   } else {
+  //     // App is in background or closed
+  //     DatabaseMethods()
+  //         .updateUserStatus(widget.userName!, ""); // Set status to empty
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -185,12 +226,12 @@ class _ChatSectionState extends State<ChatSection> {
             ],
           ),
         ),
-        padding: EdgeInsets.only(top: 60.0),
+        padding: EdgeInsets.only(top: 50.0),
         child: Stack(
           children: [
             Container(
               //main messages container
-              margin: EdgeInsets.only(top: 50.0),
+              margin: EdgeInsets.only(top: 60.0),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 1.12,
               decoration: BoxDecoration(
@@ -208,34 +249,73 @@ class _ChatSectionState extends State<ChatSection> {
             ),
             Padding(
               //top bar for returning, profile picture, and username
-              padding: const EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 10.0, bottom: 50),
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => Home()));
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios_new_outlined,
-                      color: Colors.black,
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    //button
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(top: 10, left: 5),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Home()));
+                          },
+                          child: Icon(
+                            Icons.arrow_back_ios_new_outlined,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(width: 20.0),
-                  Container(
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(widget.profileURL!),
+                  Column(children: [
+                    Container(
+                      child: CircleAvatar(
+                        maxRadius: 25,
+                        backgroundImage: NetworkImage(widget.profileURL!),
+                      ),
                     ),
-                  ),
+                  ]),
                   SizedBox(
                     width: 12.0,
                   ),
-                  Text(
-                    widget.userName!,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.0,
-                        fontFamily: "Montserrat-R"),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.userName!,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontFamily: "Montserrat-R"),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            widget.displayName!,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16.0,
+                                fontFamily: "Montserrat-R"),
+                          ),
+                          SizedBox(width: 16),
+                          Text(
+                            "$friendStatus",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16.0,
+                              fontFamily: "Montserrat-R",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),

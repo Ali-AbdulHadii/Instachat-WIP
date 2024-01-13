@@ -25,39 +25,39 @@ class _AddFriendState extends State<AddFriend> {
   String recipientId = "";
 
   Future<void> addFriend() async {
-    // Get the entered friend's username
+    //get the entered friend's username
     String friendUsername = _friendUsername.text;
 
     if (friendUsername.isEmpty) {
-      // Show a snack bar if the username is empty
+      //show a snack bar if the username is empty
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Enter a valid username"),
       ));
     } else {
       try {
-        // Get sender and recipient IDs
+        //get sender and recipient IDs
         senderId = await SharedPreference().getUserID() as String;
         recipientId = await DatabaseMethods()
             .getUserIdByUsername(friendUsername) as String;
 
-        // Check if friend request already sent
+        //check if friend request already sent
         bool requestExists = await DatabaseMethods()
             .checkFriendRequestExist(senderId, recipientId);
 
         if (requestExists) {
-          // Check if the friend request is accepted
+          //check if the friend request is accepted
           String requestStatus = await DatabaseMethods()
               .checkFriendRequestStatus(senderId, recipientId);
 
           if (requestStatus == "accepted") {
-            // Show a snack bar if the request has already been accepted
+            //show a snack bar if the request has already been accepted
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Friend request has already been accepted"),
             ));
             updateFriendRequestsList();
           } else if (requestStatus == "pending") {
             //await DatabaseMethods().sendFriendRequest(senderId, recipientId);
-            // Show a snack bar if the request has already been accepted
+            //if the request has already been accepted
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("Friend request is pending"),
             ));
@@ -69,7 +69,7 @@ class _AddFriendState extends State<AddFriend> {
             updateFriendRequestsList();
           }
         } else {
-          // Send friend request and update the list
+          //send friend request and update the list
           print("No existing friend request, sending new request");
           await DatabaseMethods().sendFriendRequest(senderId, recipientId);
           updateFriendRequestsList();
@@ -78,7 +78,7 @@ class _AddFriendState extends State<AddFriend> {
           );
         }
       } catch (t) {
-        // Show a snack bar if username not found
+        //if username not found
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Username not found"),
         ));
@@ -88,14 +88,14 @@ class _AddFriendState extends State<AddFriend> {
 
   Future<void> updateFriendRequestsList() async {
     try {
-      // Fetch friend requests and update the list
+      //fetch friend requests and update the list
       List<String> newFriendRequests =
           await DatabaseMethods().getFriendRequests();
       setState(() {
         friendRequests = newFriendRequests;
       });
     } catch (e) {
-      print("Error fetching friend requests: $e");
+      print("error fetching friend requests: $e");
     }
   }
 
@@ -124,35 +124,35 @@ class _AddFriendState extends State<AddFriend> {
         SnackBar(content: Text("Friend request accepted")),
       );
       //refresh the Home page
-      Navigator.pop(context); //close the AddFriend page
+      //Navigator.pop(context); //close the AddFriend page
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Home()),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error accepting friend request: $e")),
+        SnackBar(content: Text("error accepting friend request: $e")),
       );
     }
   }
 
   void rejectFriendRequest(String friendUsername) async {
     try {
-      // Get sender and friend IDs
+      //get sender and friend IDs
       String senderId = await SharedPreference().getUserID() as String;
       String friendId =
           await DatabaseMethods().getUserIdByUsername(friendUsername) as String;
 
-      // Logic to remove or update the friend request status
+      //logic to remove or update the friend request status
       await DatabaseMethods().rejectFriendRequest(friendId, senderId);
-      // Update the friend requests list after rejecting
+      //update the friend requests list after rejecting
       updateFriendRequestsList();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Friend request rejected"),
       ));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Error rejecting friend request: $e"),
+        content: Text("error rejecting friend request: $e"),
       ));
     }
   }

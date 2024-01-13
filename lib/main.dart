@@ -31,7 +31,6 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder<User?>(
         future: authProvider.getCurrentUser(),
         builder: (context, AsyncSnapshot<User?> snapshot) {
-          print("FutureBuilder snapshot: $snapshot");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           } else {

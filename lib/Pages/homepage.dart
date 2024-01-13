@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chatappdemo1/Pages/chat.dart';
 import 'package:chatappdemo1/Pages/setting.dart';
 import 'package:chatappdemo1/Pages/signUp.dart';
@@ -11,13 +13,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatappdemo1/services/auth.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key});
+  //const Home({Key? key});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with WidgetsBindingObserver {
+  StreamSubscription<DocumentSnapshot>? statusSubscription;
   //for changing widget state
   bool search = false;
   //storing info for chatroom
@@ -55,7 +58,7 @@ class _HomeState extends State<Home> {
                 itemBuilder: (context, index) {
                   DocumentSnapshot docSnapshot = snapshot.data.docs[index];
 
-                  // Use the instance to access unreadCounterStream
+                  //use the instance to access unreadCounterStream
                   return StreamBuilder<int>(
                     stream: _databaseMethods.unreadCounterStream(
                         docSnapshot.id, myUserName!),
@@ -86,23 +89,46 @@ class _HomeState extends State<Home> {
     //Initialize the state when the widget is created
     isMounted = true;
     onLoad();
+    //register this class as an observer
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() {
     //set isMounted to false when the widget is disposed
+    DatabaseMethods().updateUserStatus(myId!, '');
+    statusSubscription?.cancel();
     isMounted = false;
     super.dispose();
+    //remove this class as an observer
+    WidgetsBinding.instance!.removeObserver(this);
+    //streamChatRooms.drain();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // This method will be called when dependencies change,
-    // including when navigating back to this screen.
+    //this method will be called when dependencies change,
+    //including when navigating back to this screen.
     if (isMounted) {
       getSharedPref();
       setState(() {});
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.resumed:
+        DatabaseMethods().updateUserStatus(myId!, 'Online');
+        break;
+      case AppLifecycleState.paused:
+        DatabaseMethods().updateUserStatus(myId!, '');
+        break;
+
+      default:
     }
   }
 
@@ -112,6 +138,7 @@ class _HomeState extends State<Home> {
     await getSharedPref();
     //stores all the chatrooms fetched from forebase database in database methods file
     streamChatRooms = await DatabaseMethods().getChatRooms();
+    await DatabaseMethods().updateUserStatus(myId!, 'Online');
     if (isMounted) {
       initLocalFriends();
     }
@@ -119,7 +146,7 @@ class _HomeState extends State<Home> {
       setState(() {});
     }
 
-    // Add the following code to refresh local friends when navigating back
+    //add the following code to refresh local friends when navigating back
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (isMounted) {
         initLocalFriends();
@@ -154,7 +181,7 @@ class _HomeState extends State<Home> {
     });
   }
 
-  // filter friends List funcation
+  //filter friends List funcation
   List<String> filterFriendsList(String searchQuery) {
     List<String> filteredList = localFriends
         .where((friend) =>
@@ -188,7 +215,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  // filter friends  function
+  //filter friends  function
   List<String> filterFriends(String name) {
     setState(() {
       filteredFriends = localFriends
@@ -312,8 +339,7 @@ class _HomeState extends State<Home> {
                             itemBuilder: (BuildContext context) =>
                                 <PopupMenuEntry<String>>[
                               PopupMenuItem<String>(
-                                value:
-                                    'settings', // <-- Corrected value to match the one in onSelected
+                                value: 'settings',
                                 child: Text(
                                   'Settings',
                                   style: TextStyle(
@@ -329,22 +355,23 @@ class _HomeState extends State<Home> {
                 ),
                 //container for Chat Entries
                 Container(
-                    margin: EdgeInsets.only(top: 5),
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                    width: MediaQuery.of(context).size.width,
-                    height: search
-                        ? MediaQuery.of(context).size.height / 1.19
-                        : MediaQuery.of(context).size.height / 1.15,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
+                  margin: EdgeInsets.only(top: 5),
+                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                  width: MediaQuery.of(context).size.width,
+                  height: search
+                      ? MediaQuery.of(context).size.height / 1.19
+                      : MediaQuery.of(context).size.height / 1.15,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
                     ),
-                    child: search ? buildSearchResultList() : ChatRoomsList()),
+                  ),
+                  child: search ? buildSearchResultList() : ChatRoomsList(),
+                ),
               ],
             ),
           ),
@@ -433,6 +460,7 @@ class _HomeState extends State<Home> {
 
   //
   String? friendUserId;
+
   Widget buildSearchResultList() {
     return ListView.builder(
       padding: EdgeInsets.only(left: 5, right: 5),
@@ -441,6 +469,8 @@ class _HomeState extends State<Home> {
       itemCount: filteredFriends.length,
       itemBuilder: (context, index) {
         String friendName = filteredFriends[index];
+        String? friendDisplayName;
+
         return ListTile(
           title: Text(friendName),
           onTap: () async {
@@ -456,6 +486,8 @@ class _HomeState extends State<Home> {
             friendUserId =
                 await DatabaseMethods().getUsernameByUserId(friendName);
             await DatabaseMethods().createChatRoom(chatId, chatDataMap);
+            friendDisplayName = await DatabaseMethods()
+                .getUserDisplaynameByUsername(friendName);
             String friendPhotoCached = await DatabaseMethods()
                 .getFriendPhotoURL(friendName)
                 .toString();
@@ -465,6 +497,7 @@ class _HomeState extends State<Home> {
                 builder: (context) => ChatSection(
                   userName: friendName,
                   profileURL: friendPhotoCached,
+                  displayName: friendDisplayName,
                 ),
               ),
             );
@@ -491,9 +524,10 @@ class ChatRoomListTiles extends StatefulWidget {
 }
 
 class _ChatRoomListState extends State<ChatRoomListTiles> {
-  String profilePhotoURL = "", username = "", userId = "";
+  String profilePhotoURL = "", username = "", userId = "", userDisplayname = "";
   int unreadCounter = 0;
   Stream<int>? unreadCounterStream;
+  StreamSubscription<DocumentSnapshot>? statusSubscription;
   getUserInfo() async {
     try {
       username = widget.chatRoomId
@@ -504,6 +538,10 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
           await DatabaseMethods().unreadMessagesCounter(username) as int;
       QuerySnapshot querySnapshot =
           await DatabaseMethods().getUserInfo(username.toLowerCase());
+      statusSubscription =
+          DatabaseMethods().userStatusStream(username).listen((event) {
+        //handle status changes here, you can update the UI accordingly
+      });
 
       unreadCounterStream =
           DatabaseMethods().unreadCounterStream(widget.chatRoomId, username);
@@ -515,7 +553,7 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
       if (querySnapshot.docs.isNotEmpty) {
         DocumentSnapshot firstDoc = querySnapshot.docs[0];
         profilePhotoURL = firstDoc.get("Photo") ?? "";
-
+        userDisplayname = firstDoc.get("Fullname") ?? "";
         username = firstDoc.get("Username") ?? "";
         userId = firstDoc.get("id") ?? "";
         setState(() {});
@@ -524,7 +562,7 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
         print("No documents found for user $username");
         //set default values
         profilePhotoURL =
-            "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg"; // Provide a default URL or an empty string
+            "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
         userId = "Unknown";
         username = "Unknown";
         setState(() {});
@@ -542,6 +580,12 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    statusSubscription?.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       //on tapping the user, enters the chatroom
@@ -549,12 +593,15 @@ class _ChatRoomListState extends State<ChatRoomListTiles> {
         //resetCounter
         DatabaseMethods().resetUnreadCounter(widget.chatRoomId, username);
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ChatSection(
-                      userName: username,
-                      profileURL: profilePhotoURL,
-                    )));
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatSection(
+              userName: username,
+              profileURL: profilePhotoURL,
+              displayName: userDisplayname,
+            ),
+          ),
+        );
       },
       child: Container(
         margin: EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 10),
