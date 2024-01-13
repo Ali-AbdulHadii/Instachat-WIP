@@ -131,7 +131,7 @@ class DatabaseMethods {
     return FirebaseFirestore.instance
         .collection("chatrooms")
         .orderBy("time", descending: true)
-        .where("users", arrayContains: myUsername!)
+        .where("users", arrayContains: myUsername)
         .snapshots();
   }
 

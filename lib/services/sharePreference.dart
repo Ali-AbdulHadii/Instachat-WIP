@@ -79,4 +79,9 @@ class SharedPreference {
     final List<String>? friendsList = prefs.getStringList(friendsListKey);
     return Set<String>.from(friendsList ?? []);
   }
+
+  Future<bool> clearUser() async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    return await preference.clear();
+  }
 }

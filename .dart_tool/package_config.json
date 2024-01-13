@@ -362,6 +362,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "octo_image",
       "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/octo_image-2.0.0",
       "packageUri": "lib/",
@@ -420,6 +426,12 @@
       "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/plugin_platform_interface-2.1.8",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///C:/Users/aliab/AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "random_string",
@@ -584,7 +596,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-01-12T14:06:19.533696Z",
+  "generated": "2024-01-13T11:25:45.744823Z",
   "generator": "pub",
   "generatorVersion": "3.2.3"
 }

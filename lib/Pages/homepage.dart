@@ -1,5 +1,6 @@
 import 'package:chatappdemo1/Pages/chat.dart';
 import 'package:chatappdemo1/Pages/setting.dart';
+import 'package:chatappdemo1/Pages/signUp.dart';
 import 'package:chatappdemo1/services/database.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:chatappdemo1/Pages/addfriend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chatappdemo1/services/auth.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key});
@@ -135,6 +137,7 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
+  //initalize local friends
   void initLocalFriends() async {
     //check if the local friends list is already populated
 
@@ -151,6 +154,7 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // filter friends List funcation
   List<String> filterFriendsList(String searchQuery) {
     List<String> filteredList = localFriends
         .where((friend) =>
@@ -184,6 +188,7 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // filter friends  function
   List<String> filterFriends(String name) {
     setState(() {
       filteredFriends = localFriends
@@ -191,6 +196,16 @@ class _HomeState extends State<Home> {
           .toList();
     });
     return filteredFriends;
+  }
+
+  //sign out function
+  void signOut() async {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => signUp(),
+      ),
+    );
   }
 
   @override

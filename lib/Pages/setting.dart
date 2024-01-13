@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:chatappdemo1/Pages/Login.dart';
+import 'package:chatappdemo1/Pages/signUp.dart';
+import 'package:chatappdemo1/services/auth.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:chatappdemo1/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:provider/provider.dart';
 
 class settings extends StatefulWidget {
   //const settings({super.key});
@@ -238,6 +242,25 @@ class _settingsState extends State<settings> {
                     )
                   ],
                 ),
+              ),
+            ),
+            SizedBox(height: 40),
+            Container(
+              child: ElevatedButton(
+                child: Text(
+                  'Sign Out',
+                  style: TextStyle(fontFamily: "Montserrat-R", fontSize: 18),
+                ),
+                onPressed: () async {
+                  final authProvider =
+                      Provider.of<AuthProvider>(context, listen: false);
+                  await authProvider.signOut();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    (route) => false,
+                  );
+                },
               ),
             )
           ],
