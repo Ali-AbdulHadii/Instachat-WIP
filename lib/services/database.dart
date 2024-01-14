@@ -6,9 +6,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 //integrates data to database
 class DatabaseMethods {
+  //get userstatus
+  Future<String?> getUserStatus(String userName) async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userName)
+          .get();
+      Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+      return userData['status'] as String?;
+    } catch (e) {
+      print("error getting user status: $e");
+      return null;
+    }
+  }
+
   //stream userStatus
   Stream<DocumentSnapshot> userStatusStream(String userName) {
     return FirebaseFirestore.instance
@@ -20,7 +36,7 @@ class DatabaseMethods {
     });
   }
 
-  //user status (Online, or empty eg..), and maybe last seen
+  //user status (Online, or empty eg..), and lastupdate to detect crashes
   Future<void> updateUserStatus(String userName, String status) async {
     try {
       final userDoc =
@@ -29,6 +45,7 @@ class DatabaseMethods {
       if ((await userDoc.get()).exists) {
         await userDoc.update({
           'status': status,
+          'lastUpdate': FieldValue.serverTimestamp(),
         });
       } else {
         print("document with username $userName does not exist");

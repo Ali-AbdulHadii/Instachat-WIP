@@ -3,6 +3,8 @@ application
 INJECTED from C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\android\app\src\main\AndroidManifest.xml:2:5-32:19
 MERGED from [:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
 MERGED from [:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
+MERGED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
+MERGED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
 MERGED from [:firebase_storage] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
 MERGED from [:firebase_storage] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
 MERGED from [:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
@@ -13,6 +15,8 @@ MERGED from [:image_picker_android] C:\Users\aliab\OneDrive\Desktop\InstaChatRep
 MERGED from [:image_picker_android] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-19:19
 MERGED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:28:5-73:19
 MERGED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:28:5-73:19
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:25:5-36:19
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:25:5-36:19
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:26:5-37:19
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:26:5-37:19
 MERGED from [com.google.firebase:firebase-firestore:24.10.0] C:\Users\aliab\.gradle\caches\transforms-3\691a3a61eec39e6953975c7aa47c2cce\transformed\jetified-firebase-firestore-24.10.0\AndroidManifest.xml:13:5-24:19
@@ -39,8 +43,8 @@ MERGED from [com.google.android.play:integrity:1.1.0] C:\Users\aliab\.gradle\cac
 MERGED from [com.google.android.play:integrity:1.1.0] C:\Users\aliab\.gradle\caches\transforms-3\76554c43a258dfa4a786015d4cd5ddfb\transformed\jetified-integrity-1.1.0\AndroidManifest.xml:5:5-6:19
 MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e5fdcea8e748724751898fc2706e56ad\transformed\jetified-firebase-appcheck-interop-17.1.0\AndroidManifest.xml:21:5-20
 MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e5fdcea8e748724751898fc2706e56ad\transformed\jetified-firebase-appcheck-interop-17.1.0\AndroidManifest.xml:21:5-20
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\680a2964d8a0bce7cbd43c0f88e0420c\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:19:5-23:19
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\680a2964d8a0bce7cbd43c0f88e0420c\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:19:5-23:19
+MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e0a8793a7a85d6e071b7a743c9adf075\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:19:5-23:19
+MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e0a8793a7a85d6e071b7a743c9adf075\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:19:5-23:19
 MERGED from [com.google.android.gms:play-services-measurement-impl:21.5.0] C:\Users\aliab\.gradle\caches\transforms-3\f5420ef9c73471f2e1df0efbf6d69465\transformed\jetified-play-services-measurement-impl-21.5.0\AndroidManifest.xml:29:5-30:19
 MERGED from [com.google.android.gms:play-services-measurement-impl:21.5.0] C:\Users\aliab\.gradle\caches\transforms-3\f5420ef9c73471f2e1df0efbf6d69465\transformed\jetified-play-services-measurement-impl-21.5.0\AndroidManifest.xml:29:5-30:19
 MERGED from [androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] C:\Users\aliab\.gradle\caches\transforms-3\29b2afadb5d762db459808f64547fddf\transformed\jetified-ads-adservices-1.0.0-beta05\AndroidManifest.xml:22:5-26:19
@@ -79,6 +83,7 @@ INJECTED from C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\I
 MERGED from C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\android\app\src\main\AndroidManifest.xml:1:1-33:12
 MERGED from [:shared_preferences_android] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
+MERGED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:firebase_storage] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:firebase_core] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
@@ -88,6 +93,7 @@ MERGED from [:sqflite] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-W
 MERGED from [:flutter_image_compress_common] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\flutter_image_compress_common\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
 MERGED from [:path_provider_android] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:17:1-75:12
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:15:1-38:12
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:15:1-39:12
 MERGED from [com.google.firebase:firebase-firestore:24.10.0] C:\Users\aliab\.gradle\caches\transforms-3\691a3a61eec39e6953975c7aa47c2cce\transformed\jetified-firebase-firestore-24.10.0\AndroidManifest.xml:2:1-26:12
 MERGED from [com.google.firebase:firebase-analytics:21.5.0] C:\Users\aliab\.gradle\caches\transforms-3\b65eae732b6aeb7d9ab18b671b009b99\transformed\jetified-firebase-analytics-21.5.0\AndroidManifest.xml:2:1-9:12
@@ -104,7 +110,7 @@ MERGED from [com.google.android.recaptcha:recaptcha:18.1.2] C:\Users\aliab\.grad
 MERGED from [com.google.android.play:integrity:1.1.0] C:\Users\aliab\.gradle\caches\transforms-3\76554c43a258dfa4a786015d4cd5ddfb\transformed\jetified-integrity-1.1.0\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e5fdcea8e748724751898fc2706e56ad\transformed\jetified-firebase-appcheck-interop-17.1.0\AndroidManifest.xml:15:1-23:12
 MERGED from [com.google.firebase:firebase-database-collection:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\577c344e93d316a294079c302973ef71\transformed\jetified-firebase-database-collection-18.0.1\AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\680a2964d8a0bce7cbd43c0f88e0420c\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:16:1-24:12
+MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e0a8793a7a85d6e071b7a743c9adf075\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:16:1-24:12
 MERGED from [com.google.firebase:firebase-installations-interop:17.1.1] C:\Users\aliab\.gradle\caches\transforms-3\ba8eccd4e45b1355c538cd556ad68e0b\transformed\jetified-firebase-installations-interop-17.1.1\AndroidManifest.xml:15:1-19:12
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\aliab\.gradle\caches\transforms-3\99750bb863b6fe460a7b5da8686e778d\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
 MERGED from [com.google.android.gms:play-services-measurement-impl:21.5.0] C:\Users\aliab\.gradle\caches\transforms-3\f5420ef9c73471f2e1df0efbf6d69465\transformed\jetified-play-services-measurement-impl-21.5.0\AndroidManifest.xml:17:1-32:12
@@ -174,6 +180,8 @@ MERGED from [:shared_preferences_android] C:\Users\aliab\OneDrive\Desktop\InstaC
 MERGED from [:shared_preferences_android] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_storage] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_storage] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
@@ -192,6 +200,8 @@ MERGED from [:path_provider_android] C:\Users\aliab\OneDrive\Desktop\InstaChatRe
 MERGED from [:path_provider_android] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:21:5-23:64
 MERGED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:21:5-23:64
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:18:5-44
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:18:5-44
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:19:5-44
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:19:5-44
 MERGED from [com.google.firebase:firebase-firestore:24.10.0] C:\Users\aliab\.gradle\caches\transforms-3\691a3a61eec39e6953975c7aa47c2cce\transformed\jetified-firebase-firestore-24.10.0\AndroidManifest.xml:6:5-44
@@ -224,8 +234,8 @@ MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\alia
 MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e5fdcea8e748724751898fc2706e56ad\transformed\jetified-firebase-appcheck-interop-17.1.0\AndroidManifest.xml:18:5-44
 MERGED from [com.google.firebase:firebase-database-collection:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\577c344e93d316a294079c302973ef71\transformed\jetified-firebase-database-collection-18.0.1\AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.firebase:firebase-database-collection:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\577c344e93d316a294079c302973ef71\transformed\jetified-firebase-database-collection-18.0.1\AndroidManifest.xml:5:5-7:41
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\680a2964d8a0bce7cbd43c0f88e0420c\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:18:5-43
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\680a2964d8a0bce7cbd43c0f88e0420c\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:18:5-43
+MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e0a8793a7a85d6e071b7a743c9adf075\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:18:5-43
+MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e0a8793a7a85d6e071b7a743c9adf075\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:18:5-43
 MERGED from [com.google.firebase:firebase-installations-interop:17.1.1] C:\Users\aliab\.gradle\caches\transforms-3\ba8eccd4e45b1355c538cd556ad68e0b\transformed\jetified-firebase-installations-interop-17.1.1\AndroidManifest.xml:17:5-44
 MERGED from [com.google.firebase:firebase-installations-interop:17.1.1] C:\Users\aliab\.gradle\caches\transforms-3\ba8eccd4e45b1355c538cd556ad68e0b\transformed\jetified-firebase-installations-interop-17.1.1\AndroidManifest.xml:17:5-44
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\aliab\.gradle\caches\transforms-3\99750bb863b6fe460a7b5da8686e778d\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
@@ -328,6 +338,8 @@ uses-permission#android.permission.INTERNET
 ADDED from C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\android\app\src\debug\AndroidManifest.xml:6:5-66
 MERGED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:25:5-67
 MERGED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:25:5-67
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:23:5-67
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:24:5-67
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:24:5-67
 MERGED from [com.google.firebase:firebase-firestore:24.10.0] C:\Users\aliab\.gradle\caches\transforms-3\691a3a61eec39e6953975c7aa47c2cce\transformed\jetified-firebase-firestore-24.10.0\AndroidManifest.xml:11:5-67
@@ -348,6 +360,8 @@ MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.5.0] C:
 		ADDED from C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\android\app\src\debug\AndroidManifest.xml:6:22-64
 service#com.google.firebase.components.ComponentDiscoveryService
 ADDED from [:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
+MERGED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
+MERGED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
 MERGED from [:firebase_storage] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
 MERGED from [:firebase_storage] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
 MERGED from [:cloud_firestore] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
@@ -356,6 +370,8 @@ MERGED from [:firebase_core] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Insta
 MERGED from [:firebase_core] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
 MERGED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:66:9-72:19
 MERGED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:66:9-72:19
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:26:9-35:19
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:26:9-35:19
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:27:9-36:19
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:27:9-36:19
 MERGED from [com.google.firebase:firebase-firestore:24.10.0] C:\Users\aliab\.gradle\caches\transforms-3\691a3a61eec39e6953975c7aa47c2cce\transformed\jetified-firebase-firestore-24.10.0\AndroidManifest.xml:14:9-23:19
@@ -384,6 +400,12 @@ ADDED from [:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instac
 		ADDED from [:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
 	android:name
 		ADDED from [:firebase_auth] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-124
+meta-data#com.google.firebase.components:io.flutter.plugins.firebase.database.FlutterFirebaseAppRegistrar
+ADDED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
+	android:value
+		ADDED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
+	android:name
+		ADDED from [:firebase_database] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_database\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-127
 meta-data#com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar
 ADDED from [:firebase_storage] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
 	android:value
@@ -420,6 +442,8 @@ ADDED from [:image_picker_android] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo
 		ADDED from [:image_picker_android] C:\Users\aliab\OneDrive\Desktop\InstaChatRepo\Instachat-WIP-main\Instachat-WIP\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:16:17-67
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:26:5-79
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:22:5-79
+MERGED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:22:5-79
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:23:5-79
 MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:23:5-79
 MERGED from [com.google.firebase:firebase-firestore:24.10.0] C:\Users\aliab\.gradle\caches\transforms-3\691a3a61eec39e6953975c7aa47c2cce\transformed\jetified-firebase-firestore-24.10.0\AndroidManifest.xml:10:5-79
@@ -494,6 +518,18 @@ ADDED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\cac
 		ADDED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:71:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-auth:22.3.0] C:\Users\aliab\.gradle\caches\transforms-3\8f321ae7b2fefec4ba0b738a6fb8396c\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:70:17-109
+meta-data#com.google.firebase.components:com.google.firebase.database.FirebaseDatabaseKtxRegistrar
+ADDED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:29:13-31:85
+	android:value
+		ADDED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:31:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:30:17-120
+meta-data#com.google.firebase.components:com.google.firebase.database.DatabaseRegistrar
+ADDED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:32:13-34:85
+	android:value
+		ADDED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:34:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-database:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\9a4a327f24126d7060b94b897ce99509\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:33:17-109
 meta-data#com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar
 ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\aliab\.gradle\caches\transforms-3\bbf749186807067795d9e875959ef2ea\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:30:13-32:85
 	android:value
@@ -643,13 +679,13 @@ ADDED from [com.google.android.gms:play-services-measurement:21.5.0] C:\Users\al
 	android:name
 		ADDED from [com.google.android.gms:play-services-measurement:21.5.0] C:\Users\aliab\.gradle\caches\transforms-3\26623983ed14091b1fd7178d8d963521\transformed\jetified-play-services-measurement-21.5.0\AndroidManifest.xml:40:13-87
 activity#com.google.android.gms.common.api.GoogleApiActivity
-ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\680a2964d8a0bce7cbd43c0f88e0420c\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+ADDED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e0a8793a7a85d6e071b7a743c9adf075\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:9-22:45
 	android:exported
-		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\680a2964d8a0bce7cbd43c0f88e0420c\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+		ADDED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e0a8793a7a85d6e071b7a743c9adf075\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:22:19-43
 	android:theme
-		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\680a2964d8a0bce7cbd43c0f88e0420c\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+		ADDED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e0a8793a7a85d6e071b7a743c9adf075\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:21:19-78
 	android:name
-		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\aliab\.gradle\caches\transforms-3\680a2964d8a0bce7cbd43c0f88e0420c\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+		ADDED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\aliab\.gradle\caches\transforms-3\e0a8793a7a85d6e071b7a743c9adf075\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:19-85
 uses-library#android.ext.adservices
 ADDED from [androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] C:\Users\aliab\.gradle\caches\transforms-3\29b2afadb5d762db459808f64547fddf\transformed\jetified-ads-adservices-1.0.0-beta05\AndroidManifest.xml:23:9-25:40
 	android:required

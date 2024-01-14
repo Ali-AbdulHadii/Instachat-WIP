@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:chatappdemo1/services/database.dart';
 import 'package:chatappdemo1/services/sharePreference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -182,6 +181,7 @@ class _ChatSectionState extends State<ChatSection> {
     await getAndSetMessage();
     setState(() {});
     getAndListenFriendStatus();
+    startHeartbeat(widget.userName!);
   }
 
   //init state
@@ -189,6 +189,7 @@ class _ChatSectionState extends State<ChatSection> {
   void initState() {
     super.initState();
     onLoad();
+    startCrashDetection(widget.userName!);
   }
 
   @override
@@ -197,17 +198,49 @@ class _ChatSectionState extends State<ChatSection> {
     super.dispose();
   }
 
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.resumed) {
-  //     // App is in foreground
-  //     DatabaseMethods().updateUserStatus(widget.userName!, "Online");
-  //   } else {
-  //     // App is in background or closed
-  //     DatabaseMethods()
-  //         .updateUserStatus(widget.userName!, ""); // Set status to empty
-  //   }
-  // }
+  //dummy timer
+  Timer timeoutTimer = Timer(Duration(seconds: 0), () {});
+
+  //heatbeat function
+  void startHeartbeat(String userName) {
+    const Duration heartbeatInterval =
+        Duration(seconds: 10); //interval, can be changed as needed
+
+    Timer.periodic(
+      heartbeatInterval,
+      (timer) async {
+        //get the users status
+        String? userStatus = await DatabaseMethods().getUserStatus(userName);
+
+        //check if the status is not "" before updating to "online"
+        if (userStatus != "" && userStatus!.isNotEmpty) {
+          await DatabaseMethods().updateUserStatus(userName, "online");
+        }
+      },
+    );
+  }
+
+  //crashDetection mechanisim
+  Future<void> startCrashDetection(String userName) async {
+    const Duration timeoutDuration =
+        Duration(seconds: 30); //timeout, adjusted as needed
+
+    void resetTimeout() async {
+      timeoutTimer.cancel();
+      timeoutTimer = Timer(timeoutDuration, () async {
+        //user has crashed or gone offline
+        await DatabaseMethods().updateUserStatus(userName, "");
+      });
+    }
+
+    resetTimeout(); // Initial reset
+
+    //listen to user status changes
+    await DatabaseMethods().userStatusStream(userName).listen((snapshot) {
+      //reset the timeout whenever an update is received
+      resetTimeout();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
