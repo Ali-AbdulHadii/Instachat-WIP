@@ -204,7 +204,7 @@ class _ChatSectionState extends State<ChatSection> {
   //heatbeat function
   void startHeartbeat(String userName) {
     const Duration heartbeatInterval =
-        Duration(seconds: 10); //interval, can be changed as needed
+        Duration(seconds: 7); //interval, can be changed as needed
 
     Timer.periodic(
       heartbeatInterval,
@@ -223,7 +223,7 @@ class _ChatSectionState extends State<ChatSection> {
   //crashDetection mechanisim
   Future<void> startCrashDetection(String userName) async {
     const Duration timeoutDuration =
-        Duration(seconds: 30); //timeout, adjusted as needed
+        Duration(seconds: 10); //timeout, adjusted as needed
 
     void resetTimeout() async {
       timeoutTimer.cancel();
